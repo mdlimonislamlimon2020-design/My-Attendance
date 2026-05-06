@@ -3,127 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math Dept Attendance</title>
+    <title>Math Dept | Digital Attendance</title>
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         :root { --primary: #1e3a8a; --accent: #fbbf24; --danger: #ef4444; --success: #059669; }
-        body { font-family: 'Hind Siliguri', sans-serif; background: #f1f5f9; margin: 0; padding: 20px; }
-        .card { background: white; max-width: 450px; margin: auto; border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; }
-        .tab-box { display: flex; background: #f1f5f9; border-radius: 12px; padding: 5px; margin-bottom: 20px; }
-        .tab { flex: 1; padding: 10px; cursor: pointer; border-radius: 10px; font-weight: bold; }
-        .tab.active { background: white; color: var(--primary); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        select, input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
-        .btn { width: 100%; padding: 14px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
+        body { font-family: 'Hind Siliguri', sans-serif; background: #f1f5f9; margin: 0; user-select: none; }
+        .header { background: linear-gradient(135deg, #1e3a8a, #000428); color: white; padding: 25px 15px; text-align: center; border-bottom: 5px solid var(--accent); }
+        .logo-img { width: 65px; margin-bottom: 10px; }
+        .container { max-width: 450px; margin: -25px auto 40px; padding: 0 15px; }
+        .card { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.15); text-align: center; }
+        .tab-box { display: flex; background: #f1f5f9; border-radius: 12px; padding: 5px; margin-bottom: 20px; border: 1px solid #cbd5e1; }
+        .tab { flex: 1; padding: 12px; cursor: pointer; border-radius: 10px; font-weight: bold; color: #64748b; }
+        .tab.active { background: white; color: var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
+        select, input { width: 100%; padding: 14px; margin-bottom: 15px; border: 2px solid #e2e8f0; border-radius: 12px; box-sizing: border-box; font-family: inherit; }
+        .btn { width: 100%; padding: 16px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; transition: 0.3s; margin-bottom: 10px; font-family: inherit; }
         .btn-main { background: var(--primary); color: white; }
-        .status { font-size: 14px; margin-bottom: 10px; color: #66748b; font-weight: bold; }
-        #msg { margin-top: 15px; padding: 10px; border-radius: 8px; font-size: 14px; display: none; }
+        .btn-lock { background: #f97316; color: white; }
+        .status-badge { font-size: 14px; font-weight: bold; padding: 10px; border-radius: 8px; margin-bottom: 15px; background: #e0f2fe; color: #0369a1; }
+        #qrcode { margin: 15px auto; display: flex; justify-content: center; padding: 10px; background: white; border: 1px dashed var(--primary); border-radius: 10px; }
+        #msg { padding: 12px; border-radius: 10px; margin-top: 15px; font-weight: bold; display: none; }
     </style>
 </head>
 <body>
 
-<div class="card">
-    <div class="tab-box">
-        <div id="s-tab" class="tab active" onclick="switchView('student')">শিক্ষার্থী</div>
-        <div id="t-tab" class="tab" onclick="switchView('teacher')">শিক্ষক</div>
-    </div>
+<div class="header">
+    <img src="https://i.ibb.co/Xrn3XTr/7763.png" alt="Logo" class="logo-img">
+    <h2 style="margin:0; font-size: 18px;">MATHEMATICS DEPARTMENT</h2>
+    <p style="margin:5px 0 0; font-size: 14px; opacity: 0.9;">Government Titumir College, Dhaka</p>
+</div>
 
-    <div id="student-section">
-        <div id="lec-status" class="status">সার্ভার চেক করা হচ্ছে...</div>
-        <select id="student-select">
-            <option value="">আপনার নাম সিলেক্ট করুন</option>
-        </select>
-        <button class="btn btn-main" onclick="verifyLocation()">✅ হাজিরা দিন</button>
-    </div>
-
-    <div id="teacher-section" style="display:none;">
-        <input type="password" id="pass" placeholder="Password">
-        <button class="btn btn-main" onclick="login()">লগইন</button>
-        <div id="panel" style="display:none; margin-top:20px;">
-            <select id="teacher-select">
-               <option value="">-- শিক্ষক সিলেক্ট করুন --</option>
-                <option value="MR">Dr. Md Motlubar Rahman (MR)</option>
-                <option value="RI">Md. Rafiqul Islam (RI)</option>
-                <option value="ZH">Zakir Hossain (ZH)</option>
-                <option value="RA">Roksana Akter (RA)</option>
-                <option value="NJ">Nazia Jahan (NJ)</option>
-                <option value="BF">Bibi Fatema (BF)</option>
-                <option value="MC">Milton Chowdhury (MC)</option>
-            </select>
-            <button class="btn btn-main" onclick="startLec()">▶️ লেকচার শুরু করুন</button>
-            <div id="qrcode" style="margin:20px auto; display:flex; justify-content:center;"></div>
+<div class="container">
+    <div class="card">
+        <div class="tab-box">
+            <div id="s-tab" class="tab active" onclick="switchView('student')">শিক্ষার্থী</div>
+            <div id="t-tab" class="tab" onclick="switchView('teacher')">শিক্ষক</div>
         </div>
+
+        <div id="student-section">
+            <div id="lec-status" class="status-badge">সার্ভার চেক করা হচ্ছে...</div>
+            <select id="student-select"><option value="">-- নাম ও রোল সিলেক্ট করুন --</option></select>
+            <button class="btn btn-main" onclick="verifyAndSubmit()">✅ হাজিরা নিশ্চিত করুন</button>
+            <p style="font-size:11px; color:var(--danger); font-weight:bold;">📍 ক্যাম্পাস লোকেশন ও ফোন ভেরিফিকেশন অনুষঙ্গ</p>
+        </div>
+
+        <div id="teacher-section" style="display:none;">
+            <div id="admin-auth">
+                <input type="password" id="admin-pass" placeholder="অ্যাডমিন পাসওয়ার্ড">
+                <button class="btn btn-main" onclick="login()">লগইন</button>
+            </div>
+            <div id="admin-panel" style="display:none;">
+                <select id="teacher-name-select">
+                    <option value="MR">Dr. Md Motlubar Rahman (MR)</option>
+                    <option value="RI">Md. Rafiqul Islam (RI)</option>
+                    <option value="ZH">Zakir Hossain (ZH)</option>
+                    <option value="RA">Roksana Akter (RA)</option>
+                    <option value="NJ">Nazia Jahan (NJ)</option>
+                    <option value="BF">Bibi Fatema (BF)</option>
+                    <option value="MC">Milton Chowdhury (MC)</option>
+                </select>
+                <button class="btn btn-main" onclick="startNewLecture()">▶️ নতুন ক্লাস শুরু</button>
+                <div id="qrcode" style="display:none;"></div>
+                <button id="lock-btn" class="btn btn-lock" onclick="toggleLock()">🔒 রুম লক করুন</button>
+            </div>
+        </div>
+
+        <div id="msg"></div>
     </div>
-    <div id="msg"></div>
 </div>
 
 <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzknNXrN3TnFnbqudMwA1sXwLdxfDMzv0rzL_BMV6h-4rM6tVEnVY4V8e_VEQD20R9F/exec";
-    const DEPT = { lat: 23.781898, lon: 90.408503 }; // তিতুমীর কলেজ ম্যাথ ডিপার্টমেন্ট
-    let currentLec = 0;
+    const DEPT = { lat: 23.781898, lon: 90.408503, range: 0.15 }; 
+    let currentLec = 0, isLocked = false, activeTeacher = "";
 
-    // শিক্ষার্থীরা (আপনার JSON থেকে নেওয়া)
+    // স্টুডেন্ট লিস্ট (আপনার ডাটা থেকে)
     const students = [
         {"sl": 181, "reg": "2021736018", "name": "MD ALOMGIR HOSSAIN"}, {"sl": 182, "reg": "2021835973", "name": "M. F. ROHAN"}, {"sl": 183, "reg": "2021436057", "name": "FARDIN ISLAM NOBIN"}, {"sl": 184, "reg": "2021236121", "name": "MD. MIRAZUL ISLAM"}, {"sl": 185, "reg": "2021336058", "name": "MD. RAKIB HOSEN"}, {"sl": 186, "reg": "2021135998", "name": "ASIM KUMAR SEN"}, {"sl": 187, "reg": "2021936043", "name": "MD. HAFIZUR RAHMAN"}, {"sl": 188, "reg": "2021035953", "name": "FARIA TASNIM"}, {"sl": 189, "reg": "2021036132", "name": "MOHAMMAD SOHEL RANA"}, {"sl": 190, "reg": "2020749691", "name": "SAGAR MAHMUD"},
         {"sl": 191, "reg": "2020849618", "name": "IMRAN HOSSAIN"}, {"sl": 192, "reg": "2020049616", "name": "MD. MEHEDI HASAN"}, {"sl": 193, "reg": "2021936106", "name": "MOHIMA AKTER"}, {"sl": 194, "reg": "2021735956", "name": "MD. MUBAROK HOSEIN"}, {"sl": 195, "reg": "2021136131", "name": "MD. ASIFUR RAHAMAN SAKIB"}, {"sl": 196, "reg": "2020749574", "name": "MD. ARIF BHUIYAN"}, {"sl": 197, "reg": "18737020468", "name": "MD. ABDUR RAZZAK"}, {"sl": 198, "reg": "2021836116", "name": "MD. SAKIL MIAH"}, {"sl": 199, "reg": "2020349631", "name": "MD. TITUMIR ANAN"}, {"sl": 200, "reg": "2020049760", "name": "MOHIBUL MONTASIR"},
         {"sl": 201, "reg": "2020449487", "name": "MD. FAYSAL ISLAM BHUIYAN"}, {"sl": 202, "reg": "2021935936", "name": "ANTOR HOSSAIN"}, {"sl": 203, "reg": "2021236095", "name": "MD. A. ROKIB"}, {"sl": 204, "reg": "2021235933", "name": "NAIMOR RAHMAN"}, {"sl": 205, "reg": "2020149714", "name": "MD. NADIM ALI"}, {"sl": 206, "reg": "2021036105", "name": "MD. SUJAN MIA"}, {"sl": 207, "reg": "2020449694", "name": "OMAYER HOSSAIN"}, {"sl": 208, "reg": "2020449702", "name": "ABU RAYHAN"}, {"sl": 209, "reg": "2020749565", "name": "MD. BADSHA HOSEN"}, {"sl": 210, "reg": "2020749655", "name": "ARIF HASAN"}, {"sl": 211, "reg": "2021935990", "name": "MD. SHAHEEN ALOM"}, {"sl": 212, "reg": "2021235924", "name": "MD. JONAYED ISLAM JUWEL"}, {"sl": 213, "reg": "2020949608", "name": "MD. JEWEL MAHMUD HASAN"}, {"sl": 214, "reg": "2021936061", "name": "MD. AMRAN ALI"}, {"sl": 215, "reg": "2021636154", "name": "MD. RAKIBUL HASAN"}
     ];
-  
+ 
 
     async function checkStatus() {
         try {
             let res = await fetch(`${SCRIPT_URL}?action=getStatus`);
             let data = await res.json();
             currentLec = data.lec;
-            document.getElementById('lec-status').innerText = currentLec > 0 ? `চলমান: লেকচার ${currentLec}` : "কোনো লেকচার চালু নেই";
+            isLocked = data.locked;
+            updateUI();
         } catch(e) { document.getElementById('lec-status').innerText = "সার্ভার অফলাইন"; }
     }
 
-    function verifyLocation() {
-        if(currentLec == 0) return showMsg("বর্তমানে কোনো ক্লাস নেই!", "red");
-        
-        showMsg("লোকেশন চেক করা হচ্ছে...", "blue");
-        navigator.geolocation.getCurrentPosition(async (pos) => {
-            let dist = getDist(pos.coords.latitude, pos.coords.longitude, DEPT.lat, DEPT.lon);
-            if(dist > 0.2) return showMsg("আপনি ক্যাম্পাসের বাইরে!", "red");
+    function updateUI() {
+        const st = document.getElementById('lec-status');
+        if (isLocked) { st.innerText = "🔒 হাজিরা সাময়িকভাবে বন্ধ"; st.style.color = "red"; }
+        else if (currentLec > 0) { st.innerText = `চলমান: লেকচার ${currentLec}`; st.style.color = "#0369a1"; }
+        else { st.innerText = "বর্তমানে কোনো ক্লাস নেই"; }
+    }
 
-            let roll = document.getElementById('student-select').value;
-            if(!roll) return showMsg("নাম সিলেক্ট করুন!", "red");
+    async function verifyAndSubmit() {
+        if(currentLec == 0 || isLocked) return showMsg("বর্তমানে হাজিরা নেওয়া হচ্ছে না!", "red");
+        const roll = document.getElementById('student-select').value;
+        if(!roll) return showMsg("আপনার নাম সিলেক্ট করুন!", "red");
+
+        showMsg("লোকেশন যাচাই করা হচ্ছে...", "blue");
+        
+        navigator.geolocation.getCurrentPosition(async (pos) => {
+            const dist = getDist(pos.coords.latitude, pos.coords.longitude, DEPT.lat, DEPT.lon);
+            if(dist > DEPT.range) return showMsg("আপনি ক্যাম্পাসের বাইরে!", "red");
+
+            // ডিভাইস ফিনগারপ্রিন্ট (প্রক্সি রোধে)
+            const deviceID = btoa(navigator.userAgent + screen.width).slice(0,12);
 
             await fetch(SCRIPT_URL, {
                 method: 'POST',
                 mode: 'no-cors',
-                body: JSON.stringify({ action: "submitAttendance", roll: roll, lecture: currentLec, teacher: "System" })
+                body: JSON.stringify({
+                    action: "submitAttendance",
+                    roll: roll,
+                    lecture: currentLec,
+                    device: deviceID
+                })
             });
-            showMsg("হাজিরা সফল হয়েছে! ✅", "green");
-        }, () => showMsg("জিপিএস অন করুন!", "red"), {enableHighAccuracy: true});
+            showMsg("হাজিরা সফলভাবে গৃহীত! ✅", "green");
+        }, () => showMsg("জিপিএস অন করে লোকেশন পারমিশন দিন!", "red"), {enableHighAccuracy: true});
     }
 
     function getDist(lat1, lon1, lat2, lon2) {
-        let R = 6371;
-        let dLat = (lat2-lat1)*Math.PI/180;
-        let dLon = (lon2-lon1)*Math.PI/180;
-        let a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;
+        const R = 6371;
+        const dLat = (lat2-lat1)*Math.PI/180;
+        const dLon = (lon2-lon1)*Math.PI/180;
+        const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;
         return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
     }
 
-    async function startLec() {
+    async function startNewLecture() {
+        const t = document.getElementById('teacher-name-select').value;
         currentLec++;
+        isLocked = false;
         await fetch(SCRIPT_URL, {
             method: 'POST',
             mode: 'no-cors',
-            body: JSON.stringify({ action: "updateLecture", lecture: currentLec, locked: false })
+            body: JSON.stringify({ action: "updateLecture", lecture: currentLec, locked: false, teacher: t })
         });
+        document.getElementById('qrcode').style.display = "flex";
         document.getElementById('qrcode').innerHTML = "";
-        new QRCode(document.getElementById("qrcode"), { text: "LEC-"+currentLec, width: 150, height: 150 });
-        showMsg("লেকচার " + currentLec + " শুরু!", "green");
+        new QRCode(document.getElementById("qrcode"), { text: "TMC-MATH-"+currentLec, width: 150, height: 150 });
+        showMsg("লেকচার শুরু হয়েছে!", "green");
+        checkStatus();
+    }
+
+    async function toggleLock() {
+        isLocked = !isLocked;
+        await fetch(SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            body: JSON.stringify({ action: "updateLecture", lecture: currentLec, locked: isLocked })
+        });
+        document.getElementById('lock-btn').innerText = isLocked ? "🔓 আনলক করুন" : "🔒 রুম লক করুন";
         checkStatus();
     }
 
     function login() {
-        if(document.getElementById('pass').value === "TMC@2026") {
-            document.getElementById('panel').style.display = "block";
-        } else alert("ভুল পাসওয়ার্ড");
+        if(document.getElementById('admin-pass').value === "TMC@2026") {
+            document.getElementById('admin-auth').style.display = "none";
+            document.getElementById('admin-panel').style.display = "block";
+        } else alert("ভুল পাসওয়ার্ড!");
     }
 
     function switchView(v) {
@@ -134,15 +180,17 @@
     }
 
     function showMsg(t, c) {
-        let m = document.getElementById('msg');
+        const m = document.getElementById('msg');
         m.style.display = "block"; m.innerText = t;
         m.style.background = c === 'red' ? '#fee2e2' : c === 'green' ? '#dcfce7' : '#e0f2fe';
+        m.style.color = c === 'red' ? '#991b1b' : c === 'green' ? '#166534' : '#0369a1';
     }
 
     window.onload = () => {
-        let s = document.getElementById('student-select');
-        students.forEach(st => s.add(new Option(`${st.sl}. ${st.name}`, st.sl)));
+        const s = document.getElementById('student-select');
+        students.sort((a,b) => a.sl - b.sl).forEach(st => s.add(new Option(`${st.sl}. ${st.name}`, st.sl)));
         checkStatus();
+        setInterval(checkStatus, 10000); // প্রতি ১০ সেকেন্ডে অটো আপডেট হবে
     }
 </script>
 </body>
