@@ -3,231 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital Attendance | Math Dept | GTC</title>
+    <title>Math Dept Attendance</title>
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
-        :root { --primary: #1e3a8a; --accent: #fbbf24; --danger: #ef4444; --success: #059669; --white: #ffffff; }
-        body { font-family: 'Hind Siliguri', sans-serif; background: #f1f5f9; margin: 0; user-select: none; }
-        .header { background: linear-gradient(135deg, #1e3a8a, #000428); color: white; padding: 30px 20px; text-align: center; border-bottom: 5px solid var(--accent); }
-        .logo-img { width: 75px; height: auto; margin-bottom: 10px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); }
-        .header h1 { margin: 5px 0; font-size: 20px; letter-spacing: 1px; }
-        .container { max-width: 480px; margin: -25px auto 40px; padding: 0 15px; }
-        .card { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.15); text-align: center; border: 1px solid #e2e8f0; }
-        .tab-box { display: flex; background: #f1f5f9; border-radius: 12px; padding: 5px; margin-bottom: 25px; border: 1px solid #cbd5e1; }
-        .tab { flex: 1; padding: 12px; cursor: pointer; border-radius: 10px; font-weight: 700; color: #64748b; transition: 0.3s; }
-        .tab.active { background: white; color: var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
-        label { display: block; text-align: left; font-weight: 600; margin-bottom: 5px; color: #334155; font-size: 14px; }
-        select, input { width: 100%; padding: 14px; margin-bottom: 15px; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 16px; font-family: inherit; box-sizing: border-box; }
-        .btn { width: 100%; padding: 16px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 16px; font-family: inherit; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; }
+        :root { --primary: #1e3a8a; --accent: #fbbf24; --danger: #ef4444; --success: #059669; }
+        body { font-family: 'Hind Siliguri', sans-serif; background: #f1f5f9; margin: 0; padding: 20px; }
+        .card { background: white; max-width: 450px; margin: auto; border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; }
+        .tab-box { display: flex; background: #f1f5f9; border-radius: 12px; padding: 5px; margin-bottom: 20px; }
+        .tab { flex: 1; padding: 10px; cursor: pointer; border-radius: 10px; font-weight: bold; }
+        .tab.active { background: white; color: var(--primary); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        select, input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        .btn { width: 100%; padding: 14px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
         .btn-main { background: var(--primary); color: white; }
-        .btn-lock { background: #f97316; color: white; }
-        .btn-export { background: var(--success); color: white; }
-        .btn-danger { background: var(--danger); color: white; }
-        #qr-box { margin: 20px auto; display: none; justify-content: center; background: #fff; padding: 15px; border-radius: 15px; border: 2px dashed #1e3a8a; }
-        .status-badge { font-size: 14px; font-weight: bold; padding: 8px; border-radius: 8px; margin-bottom: 15px; background: #e0f2fe; color: #0369a1; }
-        #msg { padding: 12px; border-radius: 10px; margin-top: 15px; font-weight: 600; display: none; }
+        .status { font-size: 14px; margin-bottom: 10px; color: #66748b; font-weight: bold; }
+        #msg { margin-top: 15px; padding: 10px; border-radius: 8px; font-size: 14px; display: none; }
     </style>
 </head>
 <body>
 
-<div class="header">
-    <img src="https://i.ibb.co/Xrn3XTr/7763.png" alt="Titumir College Logo" class="logo-img">
-    <h1>MATHEMATICS DEPARTMENT</h1>
-    <p>Government Titumir College, Dhaka</p>
-</div>
-
-<div class="container">
-    <div class="card">
-        <div class="tab-box">
-            <div id="t-tab" class="tab" onclick="switchView('teacher')">টিচার প্যানেল</div>
-            <div id="s-tab" class="tab active" onclick="switchView('student')">শিক্ষার্থী পোর্টাল</div>
-        </div>
-
-        <div id="student-section">
-            <div id="lec-status" class="status-badge">বর্তমানে কোনো ক্লাস চলছে না</div>
-            <label>আপনার নাম ও রোল সিলেক্ট করুন:</label>
-            <select id="student-select">
-                <option value="">-- নাম নির্বাচন করুন --</option>
-            </select>
-            <button class="btn btn-main" onclick="verifyAndSubmit()">✅ হাজিরা নিশ্চিত করুন</button>
-            <p style="font-size:12px; color:#ef4444; font-weight:bold;">📍 ক্যাম্পাসে অবস্থান করা বাধ্যতামূলক</p>
-        </div>
-
-        <div id="teacher-section" style="display:none;">
-            <div id="admin-auth">
-                <input type="password" id="admin-pass-input" placeholder="অ্যাডমিন পাসওয়ার্ড">
-                <button class="btn btn-main" onclick="checkPass()">লগইন</button>
-            </div>
-            
-            <div id="admin-panel" style="display:none;">
-                <label>শিক্ষক নির্বাচন করুন:</label>
-                <select id="teacher-name-select">
-                    <option value="MR">Dr. Md Motlubar Rahman (MR)</option>
-                    <option value="RI">Md. Rafiqul Islam (RI)</option>
-                    <option value="ZH">Zakir Hossain (ZH)</option>
-                    <option value="NJ">Nazia Jahan (NJ)</option>
-                    <option value="RA">Roksana Akter (RA)</option>
-                </select>
-                <button class="btn btn-main" onclick="generateLecture()">▶️ ক্লাস শুরু করুন</button>
-                <div id="qr-box"><div id="qrcode"></div></div>
-                <button id="lock-btn" class="btn btn-lock" style="display:none;" onclick="toggleLock()">🔒 রুম লক করুন</button>
-                <button class="btn btn-export" onclick="exportData()">📊 রিপোর্ট ডাউনলোড</button>
-                <button class="btn btn-danger" onclick="resetDatabase()">🗑️ সব ডাটা মুছুন (Reset)</button>
-            </div>
-        </div>
-
-        <div id="msg"></div>
+<div class="card">
+    <div class="tab-box">
+        <div id="s-tab" class="tab active" onclick="switchView('student')">শিক্ষার্থী</div>
+        <div id="t-tab" class="tab" onclick="switchView('teacher')">শিক্ষক</div>
     </div>
+
+    <div id="student-section">
+        <div id="lec-status" class="status">সার্ভার চেক করা হচ্ছে...</div>
+        <select id="student-select">
+            <option value="">আপনার নাম সিলেক্ট করুন</option>
+        </select>
+        <button class="btn btn-main" onclick="verifyLocation()">✅ হাজিরা দিন</button>
+    </div>
+
+    <div id="teacher-section" style="display:none;">
+        <input type="password" id="pass" placeholder="Password">
+        <button class="btn btn-main" onclick="login()">লগইন</button>
+        <div id="panel" style="display:none; margin-top:20px;">
+            <select id="teacher-select">
+               <option value="">-- শিক্ষক সিলেক্ট করুন --</option>
+                <option value="MR">Dr. Md Motlubar Rahman (MR)</option>
+                <option value="RI">Md. Rafiqul Islam (RI)</option>
+                <option value="ZH">Zakir Hossain (ZH)</option>
+                <option value="RA">Roksana Akter (RA)</option>
+                <option value="NJ">Nazia Jahan (NJ)</option>
+                <option value="BF">Bibi Fatema (BF)</option>
+                <option value="MC">Milton Chowdhury (MC)</option>
+            </select>
+            <button class="btn btn-main" onclick="startLec()">▶️ লেকচার শুরু করুন</button>
+            <div id="qrcode" style="margin:20px auto; display:flex; justify-content:center;"></div>
+        </div>
+    </div>
+    <div id="msg"></div>
 </div>
 
 <script>
-    const DEPT_LAT = 23.781898, DEPT_LON = 90.408503, MAX_DIST = 0.15;
-    const STUDENT_LIST = [
-        {"sl": 1, "reg": "2021835955", "name": "MD. OBAIDUR RAHMAN"}, {"sl": 2, "reg": "2021736063", "name": "MD. SHIFAT KHANDOKER"}, {"sl": 3, "reg": "2021035971", "name": "UJJAL MIA"}, {"sl": 4, "reg": "2021436174", "name": "RATHIN ROY"}, {"sl": 5, "reg": "2021735929", "name": "OMOR FARUK"}, {"sl": 6, "reg": "2021236103", "name": "MD. YOUSUF ALI"}, {"sl": 7, "reg": "2021636000", "name": "ABDULLAH AL MAMUN"}, {"sl": 8, "reg": "2021135934", "name": "MD. SADEK MIA"}, {"sl": 9, "reg": "2021036015", "name": "MD. TANZEEM MAHMUD"}, {"sl": 10, "reg": "2020549693", "name": "MD. RASEL MIA"},
-        {"sl": 11, "reg": "2021936052", "name": "M.A RAHIM REFATH"}, {"sl": 12, "reg": "2021935909", "name": "FERDOUS MONDOL"}, {"sl": 13, "reg": "2021835892", "name": "MST. RAFIA ISLAM AKHI"}, {"sl": 14, "reg": "2021635948", "name": "NUSRAT JAHAN NISHI"}, {"sl": 15, "reg": "2021435896", "name": "JOY CHANDRA MONDAL"}, {"sl": 16, "reg": "2021535921", "name": "SUMAYA UDDIN HIRA"}, {"sl": 17, "reg": "2021936007", "name": "MD. IKRAMUL HAQUE BADHON"}, {"sl": 18, "reg": "2021035980", "name": "MD. NAYEEM HOSSAIN"}, {"sl": 19, "reg": "2021135880", "name": "SHARMIN AKTER MITU"}, {"sl": 20, "reg": "2021036060", "name": "MOHAMMOD FERDOUS ALAM MRIDA"},
-        {"sl": 21, "reg": "2021836125", "name": "MD. SIHAB PK"}, {"sl": 22, "reg": "2021635966", "name": "AMIT CHANDRA GHOSH"}, {"sl": 23, "reg": "2021036088", "name": "MD. IMAM MALEK PIASH"}, {"sl": 24, "reg": "2020349712", "name": "MOST. FARJANA KHATUN"}, {"sl": 25, "reg": "2021235988", "name": "MILTON KUMAR MONDAL"}, {"sl": 26, "reg": "2021835946", "name": "SADIA ISLAM KANON"}, {"sl": 27, "reg": "2020849663", "name": "MD. KAMRUL HASAN"}, {"sl": 28, "reg": "2020249542", "name": "MD. IBRAHIM KHALIL"}, {"sl": 29, "reg": "2020349730", "name": "BINOY SARKER"}, {"sl": 30, "reg": "2020349622", "name": "OMAR FERDOUS"},
-        {"sl": 31, "reg": "2020949617", "name": "KHORSHED ALAM"}, {"sl": 32, "reg": "2020649520", "name": "RASEL MIA"}, {"sl": 33, "reg": "2020949707", "name": "IMRAN HOSSEN"}, {"sl": 34, "reg": "2020649692", "name": "MD. ZUBAYER HASAN"}, {"sl": 35, "reg": "2020249498", "name": "TARIKUL ISLAM"}, {"sl": 36, "reg": "2021936133", "name": "MEHEDI HASAN"}, {"sl": 37, "reg": "2021736108", "name": "SHOBO RAKIB"}, {"sl": 38, "reg": "2020449766", "name": "RIDOY"}, {"sl": 39, "reg": "2021336175", "name": "MD. RAHMATULLAH"}, {"sl": 40, "reg": "2021836080", "name": "NUR MUHAMMAD SHARIF"},
-        {"sl": 41, "reg": "19201071064", "name": "AMRIN ASMA RUPA"}, {"sl": 42, "reg": "2020749592", "name": "MD. ISMAIL HOSEN"}, {"sl": 43, "reg": "2021536119", "name": "NOOR MUHAMMED ASHIK"}, {"sl": 44, "reg": "2021836035", "name": "MD. AL-IMRAN"}, {"sl": 45, "reg": "2020649610", "name": "HASAN MAHMUD"}, {"sl": 46, "reg": "2021435922", "name": "NOOR-E-JANNAT"}, {"sl": 47, "reg": "2021336076", "name": "MD MUNTASIR MAMUN ROMAN"}, {"sl": 48, "reg": "2021436165", "name": "MD. ABIR HASAN"}, {"sl": 49, "reg": "2021336012", "name": "MD. JAFRUL ISLAM"}, {"sl": 50, "reg": "2021336085", "name": "MD. JAHID"},
-        {"sl": 51, "reg": "2021636073", "name": "OMER FAHAD"}, {"sl": 52, "reg": "2021936025", "name": "MD. JAMIR HOSSEN"}, {"sl": 53, "reg": "2021236149", "name": "MD. ABDULLAHIL KAFI MONDOL"}, {"sl": 54, "reg": "2021135907", "name": "MOHAMMAD MINHAJUL ISLAM"}, {"sl": 55, "reg": "2021335941", "name": "FARDIN HASAN"}, {"sl": 56, "reg": "2021935972", "name": "MD. SAKIB HOSSAIN"}, {"sl": 57, "reg": "2021836099", "name": "AHASANUL HAQUE MOUSTAK"}, {"sl": 58, "reg": "2021636046", "name": "HRIDOY KUMAR"}, {"sl": 59, "reg": "2021035908", "name": "MD. EBRAHIM"}, {"sl": 60, "reg": "2021736144", "name": "MD. ZAFOR IQBAL"},
-        {"sl": 61, "reg": "2021636163", "name": "MD. HELAL AHMED"}, {"sl": 62, "reg": "2021636145", "name": "MD. SAJIDUR RAHMAN AKANDA"}, {"sl": 63, "reg": "2021936016", "name": "MD. SHORIFUL ISLAM SHIFAT"}, {"sl": 64, "reg": "2021936124", "name": "AL MAMUN EMON"}, {"sl": 65, "reg": "2020949699", "name": "HASIRUL ISLAM TAAIF"}, {"sl": 66, "reg": "2021636082", "name": "MST. SONIA AKTAR"}, {"sl": 67, "reg": "2021736117", "name": "ISRAT JAHAN SHETU"}, {"sl": 68, "reg": "2021336120", "name": "MD. IMRAN NAZIR"}, {"sl": 69, "reg": "2021736009", "name": "MD. HASAN REZA"}, {"sl": 70, "reg": "2021435940", "name": "SHAHIN MIAH"},
-        {"sl": 71, "reg": "2021136050", "name": "TOTUL CHANDRO SHAHA"}, {"sl": 72, "reg": "2021535994", "name": "SABUJ CHANDRA ROY"}, {"sl": 73, "reg": "2021736072", "name": "MD HASIBUL HASAN"}, {"sl": 74, "reg": "2020349578", "name": "A. B. M. GOLAM RIZVI"}, {"sl": 75, "reg": "2021836008", "name": "MOHAMMAD SIFAT ULLAH SIFAT"}, {"sl": 76, "reg": "2020949671", "name": "MD. NAFIZ CHOWDHURY EMON"}, {"sl": 77, "reg": "2020049670", "name": "MD. MASUM RANA PIYAL"}, {"sl": 78, "reg": "2020949563", "name": "FABIYA AHMED MEHJABIN"}, {"sl": 79, "reg": "2021436138", "name": "MD. MOHIN UDDIN MOHON"}, {"sl": 80, "reg": "2020049724", "name": "MD. SAGOR MAHMUD"},
-        {"sl": 81, "reg": "2020149624", "name": "SHAH ALAM"}, {"sl": 82, "reg": "2021636055", "name": "MD. SHARIFUL ISLAM"}, {"sl": 83, "reg": "2021835900", "name": "MUSTAFIJUR RAHMAN"}, {"sl": 84, "reg": "2020449559", "name": "MD. YEASIN"}, {"sl": 85, "reg": "2020849690", "name": "IMRAN"}, {"sl": 86, "reg": "2021636091", "name": "MD. HABIBUR RAHMAN"}, {"sl": 87, "reg": "2020849717", "name": "MALIHA ANJUM"}, {"sl": 88, "reg": "2020249632", "name": "REDOY KHAN"}, {"sl": 89, "reg": "2021136104", "name": "SAFWAN HOSSAIN MRIDUL"}, {"sl": 90, "reg": "2020049553", "name": "MD. SHAHEB SIDDIKE"},
-        {"sl": 91, "reg": "2020849753", "name": "MD. ABU TOHA SHEIKH"}, {"sl": 92, "reg": "2021035926", "name": "MD. SHEIKH SADI SONAT AKANDA"}, {"sl": 93, "reg": "2020149561", "name": "NAHID ISLAM"}, {"sl": 94, "reg": "2020549738", "name": "MD. MAIDUL ISLAM"}, {"sl": 95, "reg": "2021836017", "name": "MD. BAYEZID HASAN"}, {"sl": 96, "reg": "2021335978", "name": "H.M NIEM"}, {"sl": 97, "reg": "2020149615", "name": "MD. NASIR UDDIN"}, {"sl": 98, "reg": "2021435977", "name": "MD. ABU HANIFA"}, {"sl": 99, "reg": "2021536074", "name": "NAZMIN"}, {"sl": 100, "reg": "2021235979", "name": "ZULFIKAR"},
-        {"sl": 101, "reg": "2021135899", "name": "MST. MAFIA AKHTER"}, {"sl": 102, "reg": "2021936070", "name": "SHORIFUL ISLAM"}, {"sl": 103, "reg": "2021435986", "name": "DIP CHANDRA DAS"}, {"sl": 104, "reg": "2021036150", "name": "MD. SIAM HOSSAIN"}, {"sl": 105, "reg": "2020149633", "name": "AL NOMAN NIROB"}, {"sl": 106, "reg": "2021735947", "name": "JUNAIDUL HASSAN RIFAT"}, {"sl": 107, "reg": "2021635939", "name": "FARHAN TAGUAR FAHIM"}, {"sl": 108, "reg": "2021536083", "name": "MIM AKTHER SHANTO"}, {"sl": 109, "reg": "2021535895", "name": "MD. ABDUL AHAD"}, {"sl": 110, "reg": "2021635993", "name": "MD. MAKSUDUR RAHMAN"},
-        {"sl": 111, "reg": "2021735938", "name": "SABIKUN NAHAR BINTI"}, {"sl": 112, "reg": "2020849483", "name": "JANNAT AKTER"}, {"sl": 113, "reg": "2021836161", "name": "MD. SOLAMAN HOSSAIN"}, {"sl": 114, "reg": "2021035962", "name": "MD. HASIBUR RAHMAN"}, {"sl": 115, "reg": "2021135943", "name": "SHRABONI DAS DOLA"}, {"sl": 116, "reg": "2021335923", "name": "PRETTY SAHA SUPTI"}, {"sl": 117, "reg": "2021936034", "name": "MD. NAHID HASAN"}, {"sl": 118, "reg": "2021335914", "name": "MD. RAKIB HOSSEN"}, {"sl": 119, "reg": "2021636019", "name": "SM FOYSAL JAHAN BIPUL"}, {"sl": 120, "reg": "2021936098", "name": "BOSIR ULLAH"},
-        {"sl": 121, "reg": "2021136168", "name": "REFAT RAHMAN"}, {"sl": 122, "reg": "2021135925", "name": "MD. HASIBUL HASAN SHANTA"}, {"sl": 123, "reg": "2021236004", "name": "MD. MAHADI HASAN SHIHAB"}, {"sl": 124, "reg": "2021736126", "name": "MD. TAHAJJOT UL AZAD"}, {"sl": 125, "reg": "2021236059", "name": "NASIR UDDIN"}, {"sl": 126, "reg": "2020049661", "name": "MD. RAYHAN"}, {"sl": 127, "reg": "2021435913", "name": "NUR MAHAMMAD SHAIKH"}, {"sl": 128, "reg": "2020149606", "name": "MD SHOURAB MOLLIK"}, {"sl": 129, "reg": "2021035999", "name": "SOUROV ADHIKARY"}, {"sl": 130, "reg": "2021735893", "name": "SADDAM HOSSAIN"},
-        {"sl": 131, "reg": "2021636028", "name": "MARJIYA AFROSE SIMI"}, {"sl": 132, "reg": "2021335969", "name": "MD ASHRAFUL KHANDAKER"}, {"sl": 133, "reg": "2020649539", "name": "MD. IMRAN HOSSEN"}, {"sl": 134, "reg": "2021036123", "name": "SHIMANTO ROY HIMO"}, {"sl": 135, "reg": "2021135916", "name": "MD. RAKIBUL ISLAM"}, {"sl": 136, "reg": "2021035881", "name": "MD. SHAKIL BHUIYAN"}, {"sl": 137, "reg": "2021635984", "name": "MD. OMAR FARUK"}, {"sl": 138, "reg": "2020349479", "name": "JAFOR SHEIKH"}, {"sl": 139, "reg": "2021636136", "name": "SADIA ISLAM RIMI"}, {"sl": 140, "reg": "2020749484", "name": "RIWAD AHAMED"},
-        {"sl": 141, "reg": "2020449513", "name": "HOSSAIN MIA"}, {"sl": 142, "reg": "2021436039", "name": "JOYA RANI DAS"}, {"sl": 143, "reg": "2020649656", "name": "MD. AFJAL HOSSEN"}, {"sl": 144, "reg": "19201070703", "name": "MD. KAWSERUZZAMAN"}, {"sl": 145, "reg": "2021236013", "name": "KAZI KHYRUL BASHAR GISAN"}, {"sl": 146, "reg": "2020349703", "name": "MAHEDI HASAN BAPPI"}, {"sl": 147, "reg": "2021236022", "name": "MD. RABIUL ISLAM"}, {"sl": 148, "reg": "2021435931", "name": "MD. ABU JAFOR MIAH"}, {"sl": 149, "reg": "2021936142", "name": "ANTORA AKTER"}, {"sl": 150, "reg": "2021135952", "name": "WADDOHA"},
-        {"sl": 151, "reg": "2021236077", "name": "MD. HOSSAIN MAHMUD"}, {"sl": 152, "reg": "19201070407", "name": "MD. ISMAIL HOSSAIN SHAKIB"}, {"sl": 153, "reg": "2020849528", "name": "JOYNAL ABEDIN"}, {"sl": 154, "reg": "2021736171", "name": "MST. HAZERA AKTER"}, {"sl": 155, "reg": "2021735884", "name": "MD. RAIHAN TALUKDAR"}, {"sl": 156, "reg": "2020549558", "name": "MOST. TANIA KHATUN"}, {"sl": 157, "reg": "2021935945", "name": "SHAHAREAR KOBIR"}, {"sl": 158, "reg": "2021835919", "name": "MD. PARVEJ ALI"}, {"sl": 159, "reg": "2021036051", "name": "MD. MOJAFFOR HOSSAIN ABIR"}, {"sl": 160, "reg": "2021435904", "name": "SHEIKH BELLAL HASAN AREMON"},
-        {"sl": 161, "reg": "2021036033", "name": "SHARMIN AKTAR"}, {"sl": 162, "reg": "2020749754", "name": "KHADIJA AKTER"}, {"sl": 163, "reg": "19201070497", "name": "JANNAT AKTER JAHAN"}, {"sl": 164, "reg": "2021636037", "name": "PALLOB CHANDRA SEN"}, {"sl": 165, "reg": "2020549602", "name": "ISHRAT ZAREEN"}, {"sl": 166, "reg": "2021735910", "name": "UMME HABIBA"}, {"sl": 167, "reg": "2020549648", "name": "MOHAMMAD ALI"}, {"sl": 168, "reg": "2020249588", "name": "MD. RAIHAN ISLAM"}, {"sl": 169, "reg": "2021436011", "name": "MST. MARUFA KHATUN"}, {"sl": 170, "reg": "2020549639", "name": "SAJU AHMED"},
-        {"sl": 171, "reg": "2020749772", "name": "MD. ABDULLA ALL MAMUN SHAMIM"}, {"sl": 172, "reg": "2021435887", "name": "FARA FARGIM MUN"}, {"sl": 173, "reg": "2021535976", "name": "SHUVO CHANDRA ROY"}, {"sl": 174, "reg": "2021335897", "name": "SHARHIN AKTER JEBI"}, {"sl": 175, "reg": "2021035917", "name": "MD. RAHI MUNZUR-E-ELAHI"}, {"sl": 176, "reg": "2021735965", "name": "ZANNATUL FERDOUS MITHILA"}, {"sl": 177, "reg": "19201070858", "name": "SABBIR AHMED SEAM"}, {"sl": 178, "reg": "2021236176", "name": "TONIMA AKHTER"}, {"sl": 179, "reg": "2021136140", "name": "MD. ISRAFIL HOSSAIN"}, {"sl": 180, "reg": "2021336102", "name": "NURJAHAN KHANOM BABLY"},
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzknNXrN3TnFnbqudMwA1sXwLdxfDMzv0rzL_BMV6h-4rM6tVEnVY4V8e_VEQD20R9F/exec";
+    const DEPT = { lat: 23.781898, lon: 90.408503 }; // তিতুমীর কলেজ ম্যাথ ডিপার্টমেন্ট
+    let currentLec = 0;
+
+    // শিক্ষার্থীরা (আপনার JSON থেকে নেওয়া)
+    const students = [
         {"sl": 181, "reg": "2021736018", "name": "MD ALOMGIR HOSSAIN"}, {"sl": 182, "reg": "2021835973", "name": "M. F. ROHAN"}, {"sl": 183, "reg": "2021436057", "name": "FARDIN ISLAM NOBIN"}, {"sl": 184, "reg": "2021236121", "name": "MD. MIRAZUL ISLAM"}, {"sl": 185, "reg": "2021336058", "name": "MD. RAKIB HOSEN"}, {"sl": 186, "reg": "2021135998", "name": "ASIM KUMAR SEN"}, {"sl": 187, "reg": "2021936043", "name": "MD. HAFIZUR RAHMAN"}, {"sl": 188, "reg": "2021035953", "name": "FARIA TASNIM"}, {"sl": 189, "reg": "2021036132", "name": "MOHAMMAD SOHEL RANA"}, {"sl": 190, "reg": "2020749691", "name": "SAGAR MAHMUD"},
         {"sl": 191, "reg": "2020849618", "name": "IMRAN HOSSAIN"}, {"sl": 192, "reg": "2020049616", "name": "MD. MEHEDI HASAN"}, {"sl": 193, "reg": "2021936106", "name": "MOHIMA AKTER"}, {"sl": 194, "reg": "2021735956", "name": "MD. MUBAROK HOSEIN"}, {"sl": 195, "reg": "2021136131", "name": "MD. ASIFUR RAHAMAN SAKIB"}, {"sl": 196, "reg": "2020749574", "name": "MD. ARIF BHUIYAN"}, {"sl": 197, "reg": "18737020468", "name": "MD. ABDUR RAZZAK"}, {"sl": 198, "reg": "2021836116", "name": "MD. SAKIL MIAH"}, {"sl": 199, "reg": "2020349631", "name": "MD. TITUMIR ANAN"}, {"sl": 200, "reg": "2020049760", "name": "MOHIBUL MONTASIR"},
         {"sl": 201, "reg": "2020449487", "name": "MD. FAYSAL ISLAM BHUIYAN"}, {"sl": 202, "reg": "2021935936", "name": "ANTOR HOSSAIN"}, {"sl": 203, "reg": "2021236095", "name": "MD. A. ROKIB"}, {"sl": 204, "reg": "2021235933", "name": "NAIMOR RAHMAN"}, {"sl": 205, "reg": "2020149714", "name": "MD. NADIM ALI"}, {"sl": 206, "reg": "2021036105", "name": "MD. SUJAN MIA"}, {"sl": 207, "reg": "2020449694", "name": "OMAYER HOSSAIN"}, {"sl": 208, "reg": "2020449702", "name": "ABU RAYHAN"}, {"sl": 209, "reg": "2020749565", "name": "MD. BADSHA HOSEN"}, {"sl": 210, "reg": "2020749655", "name": "ARIF HASAN"}, {"sl": 211, "reg": "2021935990", "name": "MD. SHAHEEN ALOM"}, {"sl": 212, "reg": "2021235924", "name": "MD. JONAYED ISLAM JUWEL"}, {"sl": 213, "reg": "2020949608", "name": "MD. JEWEL MAHMUD HASAN"}, {"sl": 214, "reg": "2021936061", "name": "MD. AMRAN ALI"}, {"sl": 215, "reg": "2021636154", "name": "MD. RAKIBUL HASAN"}
     ];
+  
 
-    let lectureNo = parseInt(localStorage.getItem('lectureNo')) || 0;
-    let attendance = JSON.parse(localStorage.getItem('mathAttendance')) || {};
-    let lecDetails = JSON.parse(localStorage.getItem('lecDetails')) || {};
-    let deviceLog = JSON.parse(localStorage.getItem('deviceLog')) || {}; 
-    let isLocked = JSON.parse(localStorage.getItem('isLocked')) || false;
-
-    function switchView(view) {
-        document.getElementById('teacher-section').style.display = view === 'teacher' ? 'block' : 'none';
-        document.getElementById('student-section').style.display = view === 'student' ? 'block' : 'none';
-        document.getElementById('t-tab').className = view === 'teacher' ? 'tab active' : 'tab';
-        document.getElementById('s-tab').className = view === 'student' ? 'tab active' : 'tab';
-        updateStudentUI();
+    async function checkStatus() {
+        try {
+            let res = await fetch(`${SCRIPT_URL}?action=getStatus`);
+            let data = await res.json();
+            currentLec = data.lec;
+            document.getElementById('lec-status').innerText = currentLec > 0 ? `চলমান: লেকচার ${currentLec}` : "কোনো লেকচার চালু নেই";
+        } catch(e) { document.getElementById('lec-status').innerText = "সার্ভার অফলাইন"; }
     }
 
-    function checkPass() {
-        if(document.getElementById('admin-pass-input').value === "TMC@2026") {
-            document.getElementById('admin-auth').style.display = "none";
-            document.getElementById('admin-panel').style.display = "block";
-        } else alert("ভুল পাসওয়ার্ড!");
+    function verifyLocation() {
+        if(currentLec == 0) return showMsg("বর্তমানে কোনো ক্লাস নেই!", "red");
+        
+        showMsg("লোকেশন চেক করা হচ্ছে...", "blue");
+        navigator.geolocation.getCurrentPosition(async (pos) => {
+            let dist = getDist(pos.coords.latitude, pos.coords.longitude, DEPT.lat, DEPT.lon);
+            if(dist > 0.2) return showMsg("আপনি ক্যাম্পাসের বাইরে!", "red");
+
+            let roll = document.getElementById('student-select').value;
+            if(!roll) return showMsg("নাম সিলেক্ট করুন!", "red");
+
+            await fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                body: JSON.stringify({ action: "submitAttendance", roll: roll, lecture: currentLec, teacher: "System" })
+            });
+            showMsg("হাজিরা সফল হয়েছে! ✅", "green");
+        }, () => showMsg("জিপিএস অন করুন!", "red"), {enableHighAccuracy: true});
     }
 
-    function generateLecture() {
-        const tCode = document.getElementById('teacher-name-select').value;
-        lectureNo++;
-        isLocked = false;
-        lecDetails[lectureNo] = tCode;
-        saveAll();
-        document.getElementById('qr-box').style.display = "flex";
-        document.getElementById('lock-btn').style.display = "flex";
-        document.getElementById('qrcode').innerHTML = "";
-        new QRCode(document.getElementById("qrcode"), { text: "TMC-MATH-"+lectureNo, width: 160, height: 160 });
-        notify("লেকচার " + lectureNo + " শুরু!", "green");
-    }
-
-    function toggleLock() {
-        isLocked = !isLocked;
-        saveAll();
-        document.getElementById('lock-btn').innerText = isLocked ? "🔓 আনলক করুন" : "🔒 রুম লক করুন";
-        notify(isLocked ? "হাজিরা বন্ধ" : "হাজিরা চালু", isLocked ? "red" : "green");
-    }
-
-    async function verifyAndSubmit() {
-        if(isLocked || lectureNo === 0) return notify("বর্তমানে হাজিরা নেওয়া হচ্ছে না", "red");
-        const roll = document.getElementById('student-select').value;
-        if(!roll) return notify("আপনার নাম সিলেক্ট করুন!", "red");
-
-        const fingerprint = btoa(navigator.userAgent + screen.width).slice(0, 15);
-        if(deviceLog[lectureNo] && deviceLog[lectureNo][fingerprint] && deviceLog[lectureNo][fingerprint] !== roll) {
-            return notify("এক ফোন থেকে একজনের বেশি হাজিরা সম্ভব নয়!", "red");
-        }
-
-        navigator.geolocation.getCurrentPosition((pos) => {
-            const dist = getDistance(pos.coords.latitude, pos.coords.longitude, DEPT_LAT, DEPT_LON);
-            if(dist > MAX_DIST) return notify("আপনি ক্যাম্পাসের বাইরে!", "red");
-            
-            if(!attendance[roll]) attendance[roll] = {};
-            if(attendance[roll][lectureNo]) return notify("ইতিমধ্যে হাজিরা দিয়েছেন!", "blue");
-
-            attendance[roll][lectureNo] = 1;
-            if(!deviceLog[lectureNo]) deviceLog[lectureNo] = {};
-            deviceLog[lectureNo][fingerprint] = roll;
-            saveAll();
-            notify("সফলভাবে হাজিরা গৃহীত হয়েছে! ✅", "green");
-        }, () => notify("লোকেশন এক্সেস দিন!", "red"), {enableHighAccuracy: true});
-    }
-
-    function getDistance(lat1, lon1, lat2, lon2) {
-        const R = 6371;
-        const dLat = (lat2-lat1) * Math.PI / 180;
-        const dLon = (lon2-lon1) * Math.PI / 180;
-        const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180) * Math.cos(lat2*Math.PI/180) * Math.sin(dLon/2)**2;
+    function getDist(lat1, lon1, lat2, lon2) {
+        let R = 6371;
+        let dLat = (lat2-lat1)*Math.PI/180;
+        let dLon = (lon2-lon1)*Math.PI/180;
+        let a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;
         return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
     }
 
-    function saveAll() {
-        localStorage.setItem('lectureNo', lectureNo);
-        localStorage.setItem('mathAttendance', JSON.stringify(attendance));
-        localStorage.setItem('lecDetails', JSON.stringify(lecDetails));
-        localStorage.setItem('deviceLog', JSON.stringify(deviceLog));
-        localStorage.setItem('isLocked', isLocked);
-    }
-
-    function resetDatabase() {
-        if(confirm("আপনি কি নিশ্চিতভাবে সব হাজিরা ডাটা মুছে ফেলতে চান? এটি আর ফিরিয়ে আনা যাবে না!")) {
-            localStorage.clear();
-            location.reload();
-        }
-    }
-
-    function exportData() {
-        let csv = "Roll,Name,Registration," + Object.keys(lecDetails).map(l => `Lec ${l}(${lecDetails[l]})`).join(",") + ",Total\n";
-        STUDENT_LIST.forEach(s => {
-            let row = [s.sl, s.name, s.reg], sum = 0;
-            Object.keys(lecDetails).forEach(l => {
-                let v = (attendance[s.sl] && attendance[s.sl][l]) ? 1 : 0;
-                row.push(v); sum += v;
-            });
-            row.push(sum); csv += row.join(",") + "\n";
+    async function startLec() {
+        currentLec++;
+        await fetch(SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            body: JSON.stringify({ action: "updateLecture", lecture: currentLec, locked: false })
         });
-        const blob = new Blob(["\ufeff" + csv], {type: 'text/csv'});
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = "Attendance_Report.csv"; a.click();
+        document.getElementById('qrcode').innerHTML = "";
+        new QRCode(document.getElementById("qrcode"), { text: "LEC-"+currentLec, width: 150, height: 150 });
+        showMsg("লেকচার " + currentLec + " শুরু!", "green");
+        checkStatus();
     }
 
-    function notify(t, c) {
-        const m = document.getElementById('msg');
-        m.innerText = t; m.style.display = "block";
-        m.style.backgroundColor = c === 'green' ? '#dcfce7' : c === 'red' ? '#fee2e2' : '#e0f2fe';
-        m.style.color = c === 'green' ? '#166534' : c === 'red' ? '#991b1b' : '#1e3a8a';
+    function login() {
+        if(document.getElementById('pass').value === "TMC@2026") {
+            document.getElementById('panel').style.display = "block";
+        } else alert("ভুল পাসওয়ার্ড");
     }
 
-    function updateStudentUI() {
-        document.getElementById('lec-status').innerText = isLocked ? "🔒 হাজিরা বন্ধ" : (lectureNo > 0 ? `চলমান: লেকচার ${lectureNo} (${lecDetails[lectureNo]})` : "বর্তমানে কোনো ক্লাস নেই");
+    function switchView(v) {
+        document.getElementById('student-section').style.display = v === 'student' ? 'block' : 'none';
+        document.getElementById('teacher-section').style.display = v === 'teacher' ? 'block' : 'none';
+        document.getElementById('s-tab').className = v === 'student' ? 'tab active' : 'tab';
+        document.getElementById('t-tab').className = v === 'teacher' ? 'tab active' : 'tab';
+    }
+
+    function showMsg(t, c) {
+        let m = document.getElementById('msg');
+        m.style.display = "block"; m.innerText = t;
+        m.style.background = c === 'red' ? '#fee2e2' : c === 'green' ? '#dcfce7' : '#e0f2fe';
     }
 
     window.onload = () => {
-        const sel = document.getElementById('student-select');
-        STUDENT_LIST.forEach(s => sel.add(new Option(`${s.sl}. ${s.name} (${s.reg})`, s.sl)));
-        updateStudentUI();
-    };
+        let s = document.getElementById('student-select');
+        students.forEach(st => s.add(new Option(`${st.sl}. ${st.name}`, st.sl)));
+        checkStatus();
+    }
 </script>
 </body>
 </html>
