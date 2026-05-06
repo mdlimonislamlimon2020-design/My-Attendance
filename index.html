@@ -3,77 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dept. of Mathematics | Titumir College</title>
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600&display=swap" rel="stylesheet">
+    <title>Digital Attendance | Math Dept | GTC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
-        :root { --primary: #1e3a8a; --accent: #fbbf24; --danger: #ef4444; --white: #ffffff; }
-        body { font-family: 'Hind Siliguri', sans-serif; background: #f1f5f9; margin: 0; }
+        :root { --primary: #1e3a8a; --accent: #fbbf24; --danger: #ef4444; --success: #059669; --white: #ffffff; }
+        body { font-family: 'Hind Siliguri', sans-serif; background: #f1f5f9; margin: 0; user-select: none; }
         
-        /* Header & Logo */
-        .header { background: var(--primary); color: white; padding: 20px; text-align: center; border-bottom: 5px solid var(--accent); }
-        .logo-img { width: 80px; height: auto; margin-bottom: 10px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
-        .header h1 { margin: 5px 0; font-size: 22px; }
-        .header p { margin: 0; font-size: 14px; opacity: 0.9; }
+        /* Header */
+        .header { background: linear-gradient(135deg, #1e3a8a, #000428); color: white; padding: 30px 20px; text-align: center; border-bottom: 5px solid var(--accent); }
+        .logo-img { width: 75px; height: auto; margin-bottom: 10px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); }
+        .header h1 { margin: 5px 0; font-size: 20px; letter-spacing: 1px; }
 
-        .container { max-width: 480px; margin: 20px auto; padding: 10px; }
-        .card { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; }
+        .container { max-width: 480px; margin: -25px auto 40px; padding: 0 15px; }
+        .card { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.15); text-align: center; border: 1px solid #e2e8f0; }
         
-        select, input { width: 100%; padding: 14px; margin: 10px 0; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 16px; box-sizing: border-box; }
-        .btn { width: 100%; padding: 15px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 16px; margin: 5px 0; transition: 0.3s; }
+        /* Tabs */
+        .tab-box { display: flex; background: #f1f5f9; border-radius: 12px; padding: 5px; margin-bottom: 25px; border: 1px solid #cbd5e1; }
+        .tab { flex: 1; padding: 12px; cursor: pointer; border-radius: 10px; font-weight: 700; color: #64748b; transition: 0.3s; }
+        .tab.active { background: white; color: var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
+
+        /* Forms */
+        label { display: block; text-align: left; font-weight: 600; margin-bottom: 5px; color: #334155; font-size: 14px; }
+        select, input { width: 100%; padding: 14px; margin-bottom: 15px; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 16px; font-family: inherit; transition: 0.3s; }
+        input:focus, select:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 4px rgba(30, 58, 138, 0.1); }
+        
+        .btn { width: 100%; padding: 16px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 16px; font-family: inherit; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .btn-main { background: var(--primary); color: white; }
-        .btn-main:active { transform: scale(0.98); }
+        .btn-main:hover { background: #172554; }
         .btn-lock { background: var(--danger); color: white; }
-        
-        .tab-box { display: flex; background: #f1f5f9; border-radius: 12px; padding: 5px; margin-bottom: 25px; }
-        .tab { flex: 1; padding: 12px; cursor: pointer; border-radius: 10px; font-weight: 600; color: #64748b; }
-        .tab.active { background: white; color: var(--primary); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .btn-export { background: var(--success); color: white; margin-top: 10px; }
 
-        #qr-box { margin: 20px auto; display: none; justify-content: center; background: white; padding: 15px; border-radius: 15px; border: 2px dashed #cbd5e1; }
-        .security-info { font-size: 12px; color: #ef4444; margin-top: 10px; font-weight: bold; }
-        #msg { padding: 10px; border-radius: 8px; margin-top: 15px; display: none; }
+        #qr-box { margin: 20px auto; display: none; justify-content: center; background: #fff; padding: 15px; border-radius: 15px; border: 2px dashed #1e3a8a; animation: fadeIn 0.5s; }
+        .status-badge { font-size: 14px; font-weight: bold; padding: 8px; border-radius: 8px; margin-bottom: 15px; background: #e0f2fe; color: #0369a1; }
+        
+        #msg { padding: 12px; border-radius: 10px; margin-top: 15px; font-weight: 600; display: none; animation: slideUp 0.3s; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
 <div class="header">
     <img src="https://i.ibb.co/Xrn3XTr/7763.png" alt="Titumir College Logo" class="logo-img">
-    <h1>DEPARTMENT OF MATHEMATICS</h1>
+    <h1>MATHEMATICS DEPARTMENT</h1>
     <p>Government Titumir College, Dhaka</p>
 </div>
 
 <div class="container">
     <div class="card">
         <div class="tab-box">
-            <div id="t-tab" class="tab active" onclick="switchView('teacher')">টিচার প্যানেল</div>
-            <div id="s-tab" class="tab" onclick="switchView('student')">শিক্ষার্থী পোর্টাল</div>
+            <div id="t-tab" class="tab" onclick="verifyAdmin()">টিচার প্যানেল</div>
+            <div id="s-tab" class="tab active" onclick="switchView('student')">শিক্ষার্থী পোর্টাল</div>
         </div>
 
-        <div id="teacher-section">
-            <label style="display:block; text-align:left; font-weight:600;">কোর্স শিক্ষক নির্বাচন করুন:</label>
-            <select id="teacher-select">
-                <option value="">-- শিক্ষক সিলেক্ট করুন --</option>
-                <option value="MR">Dr. Md Motlubar Rahman (MR)</option>
-                <option value="RI">Md. Rafiqul Islam (RI)</option>
-                <option value="ZH">Zakir Hossain (ZH)</option>
-                <option value="RA">Roksana Akter (RA)</option>
-                <option value="NJ">Nazia Jahan (NJ)</option>
-                <option value="BF">Bibi Fatema (BF)</option>
-                <option value="MC">Milton Chowdhury (MC)</option>
-            </select>
+        <div id="student-section">
+            <div id="lec-status" class="status-badge">বর্তমানে কোনো লেকচার চলছে না</div>
+            <label>আপনার রোল নম্বর:</label>
+            <input type="number" id="roll-input" placeholder="উদাঃ 7" required>
+            <button class="btn btn-main" onclick="verifyAndSubmit()">✅ হাজিরা নিশ্চিত করুন</button>
+            <p style="font-size:12px; color:#ef4444; margin-top:10px; font-weight:bold;">📍 লোকেশন এবং ডিভাইস ভেরিফিকেশন অন আছে</p>
+        </div>
+
+        <div id="teacher-section" style="display:none;">
+            <div id="admin-auth">
+                <label>অ্যাডমিন পাসওয়ার্ড:</label>
+                <input type="password" id="admin-pass-input" placeholder="পাসওয়ার্ড লিখুন">
+                <button class="btn btn-main" onclick="checkPass()">লগইন করুন</button>
+            </div>
             
-            <div id="qr-box"><div id="qrcode"></div></div>
-
-            <button class="btn btn-main" onclick="generateLecture()">নতুন লেকচার শুরু করুন</button>
-            <button id="lock-btn" class="btn btn-lock" style="display:none;" onclick="toggleLock()">🔒 রুম লক করুন</button>
-            <button class="btn" style="background:#059669; color:white" onclick="exportData()">রিপোর্ট ডাউনলোড (Excel)</button>
-        </div>
-
-        <div id="student-section" style="display:none;">
-            <div id="lec-status" style="font-weight:bold; color:var(--primary); margin-bottom:15px;"></div>
-            <input type="number" id="roll-input" placeholder="আপনার রোল নম্বর লিখুন">
-            <button class="btn btn-main" onclick="verifyAndSubmit()">হাজিরা নিশ্চিত করুন</button>
-            <p class="security-info">⚠️ জিপিএস এবং ডিভাইস ভেরিফিকেশন সক্রিয়</p>
+            <div id="admin-panel" style="display:none;">
+                <label>শিক্ষক নির্বাচন করুন:</label>
+                <select id="teacher-select">
+                    <option value="">-- শিক্ষক সিলেক্ট করুন --</option>
+                    <option value="MR">Dr. Md Motlubar Rahman (MR)</option>
+                    <option value="RI">Md. Rafiqul Islam (RI)</option>
+                    <option value="ZH">Zakir Hossain (ZH)</option>
+                    <option value="NJ">Nazia Jahan (NJ)</option>
+                    <option value="RA">Roksana Akter (RA)</option>
+                </select>
+                <button class="btn btn-main" onclick="generateLecture()">▶️ নতুন লেকচার শুরু করুন</button>
+                <div id="qr-box"><div id="qrcode"></div></div>
+                <button id="lock-btn" class="btn btn-lock" style="display:none;" onclick="toggleLock()">🔒 রুম লক করুন</button>
+                <button class="btn btn-export" onclick="exportData()">📊 রিপোর্ট ডাউনলোড (Excel)</button>
+                <button class="btn" style="background:#64748b; color:white; margin-top:20px;" onclick="location.reload()">🚪 লগ আউট</button>
+            </div>
         </div>
 
         <div id="msg"></div>
@@ -81,88 +95,101 @@
 </div>
 
 <script>
-    // আপডেট করা জিপিএস লোকেশন ও নাম
     const DEPT_LAT = 23.781898; 
     const DEPT_LON = 90.408503;
-    const MAX_DIST = 0.15; // ১৫০ মিটার সীমানা
+    const MAX_DIST = 0.15; // 150 Meters
 
     let lectureNo = parseInt(localStorage.getItem('lectureNo')) || 0;
     let attendance = JSON.parse(localStorage.getItem('mathAttendance')) || {};
     let lecDetails = JSON.parse(localStorage.getItem('lecDetails')) || {};
     let deviceLog = JSON.parse(localStorage.getItem('deviceLog')) || {}; 
-    let isLocked = false;
+    let isLocked = JSON.parse(localStorage.getItem('isLocked')) || false;
+
+    // ১. অ্যাডমিন ভেরিফিকেশন ফাংশন
+    function verifyAdmin() {
+        switchView('teacher');
+    }
+
+    function checkPass() {
+        const pass = document.getElementById('admin-pass-input').value;
+        if(pass === "TMC@2026") {
+            document.getElementById('admin-auth').style.display = "none";
+            document.getElementById('admin-panel').style.display = "block";
+            notify("অ্যাডমিন এক্সেস অনুমোদিত", "green");
+        } else {
+            alert("ভুল পাসওয়ার্ড! আপনি অ্যাডমিন প্যানেলে প্রবেশের অনুমতিপ্রাপ্ত নন।");
+        }
+    }
 
     function switchView(view) {
         document.getElementById('teacher-section').style.display = view === 'teacher' ? 'block' : 'none';
         document.getElementById('student-section').style.display = view === 'student' ? 'block' : 'none';
         document.getElementById('t-tab').className = view === 'teacher' ? 'tab active' : 'tab';
         document.getElementById('s-tab').className = view === 'student' ? 'tab active' : 'tab';
+        
         if(view === 'student') {
-            document.getElementById('lec-status').innerText = lectureNo > 0 ? `চলমান লেকচার: ${lectureNo} (শিক্ষক: ${lecDetails[lectureNo] || 'N/A'})` : "বর্তমানে কোনো লেকচার চলছে না";
+            const statusText = lectureNo > 0 ? `চলমান লেকচার: ${lectureNo} (শিক্ষক: ${lecDetails[lectureNo]})` : "বর্তমানে কোনো লেকচার চলছে না";
+            document.getElementById('lec-status').innerText = isLocked ? "🔒 এই লেকচারের হাজিরা বন্ধ" : statusText;
         }
     }
 
     function generateLecture() {
         const tCode = document.getElementById('teacher-select').value;
-        if(!tCode) return alert("দয়া করে একজন শিক্ষক নির্বাচন করুন!");
+        if(!tCode) return alert("শিক্ষক নির্বাচন করুন!");
         
         lectureNo++;
+        isLocked = false;
         lecDetails[lectureNo] = tCode;
         localStorage.setItem('lectureNo', lectureNo);
         localStorage.setItem('lecDetails', JSON.stringify(lecDetails));
+        localStorage.setItem('isLocked', false);
 
         document.getElementById('qr-box').style.display = "flex";
-        document.getElementById('lock-btn').style.display = "block";
+        document.getElementById('lock-btn').style.display = "flex";
         document.getElementById('qrcode').innerHTML = "";
-        new QRCode(document.getElementById("qrcode"), { 
-            text: "MATH-DEPT-" + tCode + "-" + Date.now(), 
-            width: 180, 
-            height: 180 
-        });
+        new QRCode(document.getElementById("qrcode"), { text: "TMC-MATH-"+Date.now(), width: 160, height: 160 });
         
         notify("লেকচার " + lectureNo + " শুরু হয়েছে!", "green");
     }
 
     function toggleLock() {
         isLocked = !isLocked;
+        localStorage.setItem('isLocked', isLocked);
         document.getElementById('lock-btn').innerText = isLocked ? "🔓 হাজিরা পুনরায় খুলুন" : "🔒 রুম লক করুন";
-        notify(isLocked ? "এই লেকচারের হাজিরা বন্ধ করা হয়েছে" : "হাজিরা পুনরায় চালু হয়েছে", isLocked ? "red" : "green");
+        notify(isLocked ? "হাজিরা রুম লক করা হয়েছে" : "হাজিরা রুম উন্মুক্ত", isLocked ? "red" : "green");
     }
 
+    // ২. স্টুডেন্ট হাজিরা ভেরিফিকেশন (জিপিএস + ডিভাইস লক)
     async function verifyAndSubmit() {
-        if(isLocked) return notify("দুঃখিত, এই লেকচারের হাজিরা বন্ধ!", "red");
-        if(lectureNo === 0) return notify("কোনো লেকচার শুরু হয়নি!", "orange");
+        if(isLocked) return notify("দুঃখিত, এই লেকচারের হাজিরা বন্ধ করা হয়েছে!", "red");
+        if(lectureNo === 0) return notify("বর্তমানে কোনো ক্লাস চলছে না!", "red");
 
         const roll = document.getElementById('roll-input').value.trim();
-        if(!roll) return notify("অনুগ্রহ করে আপনার রোল নম্বর দিন!", "orange");
+        if(!roll) return notify("রোল নম্বর দিন!", "red");
 
-        // ডিভাইস সিকিউরিটি চেক
+        // ডিভাইস ফিঙ্গারপ্রিন্ট (এক ফোন এক রোল)
         const fingerprint = btoa(navigator.userAgent + screen.width).slice(0, 15);
-        if(deviceLog[lectureNo] && deviceLog[lectureNo][fingerprint]) {
-            if(deviceLog[lectureNo][fingerprint] !== roll) {
-                return notify("একটি ফোন থেকে কেবল একজনই হাজিরা দিতে পারবে!", "red");
-            }
+        if(deviceLog[lectureNo] && deviceLog[lectureNo][fingerprint] && deviceLog[lectureNo][fingerprint] !== roll) {
+            return notify("একটি ফোন থেকে কেবল একজনই হাজিরা দিতে পারবে!", "red");
         }
 
-        if (!navigator.geolocation) return notify("আপনার ফোনের GPS অন করুন!", "red");
+        if (!navigator.geolocation) return notify("জিপিএস অন করুন!", "red");
 
-        notify("লোকেশন ভেরিফাই করা হচ্ছে...", "#1e3a8a");
+        notify("লোকেশন যাচাই করা হচ্ছে...", "blue");
+        
         navigator.geolocation.getCurrentPosition((pos) => {
-            if(pos.coords.accuracy > 150) return notify("জিপিএস সিগন্যাল দুর্বল! ফেক জিপিএস বন্ধ রাখুন।", "red");
-
             const dist = getDistance(pos.coords.latitude, pos.coords.longitude, DEPT_LAT, DEPT_LON);
-            
             if(dist > MAX_DIST) {
-                notify("আপনি ডিপার্টমেন্টের বাইরে অবস্থান করছেন! (দূরত্ব: " + (dist*1000).toFixed(0) + " মিটার)", "red");
+                notify("আপনি ডিপার্টমেন্টের বাইরে! হাজিরা হবে না।", "red");
             } else {
                 saveAttendance(roll, fingerprint);
             }
-        }, () => notify("লোকেশন এক্সেস দিন নতুবা হাজিরা হবে না!", "red"), {enableHighAccuracy: true});
+        }, () => notify("লোকেশন পারমিশন না দিলে হাজিরা হবে না!", "red"), {enableHighAccuracy: true});
     }
 
     function saveAttendance(roll, fingerprint) {
         if(!attendance[roll]) attendance[roll] = {};
-        if(attendance[roll][lectureNo]) return notify("আপনার হাজিরা ইতিমধ্যে নেওয়া হয়েছে!", "blue");
+        if(attendance[roll][lectureNo]) return notify("আপনি অলরেডি হাজিরা দিয়েছেন!", "blue");
 
         attendance[roll][lectureNo] = 1;
         if(!deviceLog[lectureNo]) deviceLog[lectureNo] = {};
@@ -171,7 +198,7 @@
         localStorage.setItem('mathAttendance', JSON.stringify(attendance));
         localStorage.setItem('deviceLog', JSON.stringify(deviceLog));
         
-        notify("ধন্যবাদ! রোল " + roll + ", হাজিরা গৃহীত হয়েছে। ✅", "green");
+        notify("সফল! রোল " + roll + ", হাজিরা গৃহীত হয়েছে। ✅", "green");
         document.getElementById('roll-input').value = "";
     }
 
@@ -185,7 +212,7 @@
 
     function exportData() {
         if(Object.keys(attendance).length === 0) return alert("কোনো ডাটা নেই!");
-        let csv = "Roll," + Object.keys(lecDetails).map(l => `Lec ${l} (${lecDetails[l]})`).join(",") + ",Total Attendance\n";
+        let csv = "Roll," + Object.keys(lecDetails).map(l => `Lec ${l} (${lecDetails[l]})`).join(",") + ",Total\n";
         for(let r in attendance) {
             let row = [r], sum = 0;
             for(let l in lecDetails) {
@@ -194,18 +221,22 @@
             }
             row.push(sum); csv += row.join(",") + "\n";
         }
-        const blob = new Blob([csv], {type: 'text/csv'});
+        const blob = new Blob(["\ufeff" + csv], {type: 'text/csv;charset=utf-8'});
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
-        a.download = "Math_Dept_Report.csv"; a.click();
+        a.download = "Attendance_Math_Dept.csv"; a.click();
     }
 
     function notify(t, c) {
         const m = document.getElementById('msg');
-        m.innerText = t; m.style.backgroundColor = c === 'green' ? '#dcfce7' : c === 'red' ? '#fee2e2' : '#e0f2fe';
-        m.style.color = c === 'green' ? '#166534' : c === 'red' ? '#991b1b' : '#1e3a8a';
+        m.innerText = t;
         m.style.display = "block";
+        m.style.backgroundColor = c === 'green' ? '#dcfce7' : c === 'red' ? '#fee2e2' : '#e0f2fe';
+        m.style.color = c === 'green' ? '#166534' : c === 'red' ? '#991b1b' : '#1e3a8a';
     }
+
+    // উইন্ডো লোড হওয়ার সময় স্টুডেন্ট মোড রাখা
+    window.onload = () => switchView('student');
 </script>
 </body>
 </html>
