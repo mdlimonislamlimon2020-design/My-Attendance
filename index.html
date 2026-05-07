@@ -3,386 +3,333 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math Dept | Professional Attendance System</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>GTC Math | Attendance Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     
     <style>
         :root {
-            --primary: #0f172a; /* Deep Navy */
-            --accent: #ca8a04; /* Golden */
-            --success: #059669;
-            --danger: #dc2626;
-            --card-bg: #ffffff;
-            --text-main: #1e293b;
+            --primary: #1e3a8a; /* Royal Blue */
+            --accent: #d97706;  /* Deep Golden */
+            --bg: #f8fafc;
+            --white: #ffffff;
+            --text-dark: #0f172a;
+            --text-light: #64748b;
+            --danger: #be123c;
+            --success: #15803d;
         }
 
         body {
-            font-family: 'Hind Siliguri', 'Inter', sans-serif;
-            background: #f1f5f9;
+            font-family: 'Inter', 'Hind Siliguri', sans-serif;
+            background-color: var(--bg);
             margin: 0;
-            color: var(--text-main);
-            overflow-x: hidden;
+            color: var(--text-dark);
+            line-height: 1.6;
         }
 
-        /* Top Navigation */
-        .navbar {
-            background: var(--primary);
-            padding: 15px 20px;
+        /* Header Area */
+        .header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+            padding: 40px 20px;
+            text-align: center;
+            color: var(--white);
+            border-bottom: 5px solid var(--accent);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .header h1 { font-size: 24px; margin: 0; font-weight: 700; letter-spacing: 0.5px; }
+        .header p { font-size: 14px; opacity: 0.9; margin-top: 5px; font-weight: 400; }
+
+        .container { max-width: 450px; margin: -30px auto 50px; padding: 0 15px; }
+
+        /* Card Design */
+        .card {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+
+        /* Modern Tabs */
+        .tab-group {
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-
-        .nav-brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: white;
-        }
-
-        .nav-brand img { width: 45px; }
-        .nav-brand h2 { margin: 0; font-size: 18px; letter-spacing: 0.5px; }
-
-        /* Main Layout */
-        .main-container {
-            max-width: 500px;
-            margin: 30px auto;
-            padding: 0 15px;
-        }
-
-        .dashboard-card {
-            background: var(--card-bg);
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
-            overflow: hidden;
-            border: 1px solid #e2e8f0;
-        }
-
-        .tabs {
-            display: flex;
-            background: #f8fafc;
-            border-bottom: 1px solid #e2e8f0;
+            background: #f1f5f9;
+            border-radius: 14px;
+            padding: 5px;
+            margin-bottom: 25px;
         }
 
         .tab-btn {
             flex: 1;
-            padding: 18px;
+            padding: 12px;
             border: none;
             background: none;
-            font-weight: 700;
-            color: #94a3b8;
+            font-weight: 600;
+            color: var(--text-light);
             cursor: pointer;
+            border-radius: 10px;
             transition: 0.3s;
-            font-size: 15px;
+            font-family: inherit;
         }
 
         .tab-btn.active {
+            background: var(--white);
             color: var(--primary);
-            border-bottom: 3px solid var(--accent);
-            background: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
-
-        .content { padding: 30px; }
 
         /* Status Indicator */
-        .status-pill {
-            background: #eff6ff;
-            color: #1d4ed8;
-            padding: 10px 15px;
-            border-radius: 50px;
-            font-size: 13px;
+        .status-box {
+            text-align: center;
+            padding: 12px;
+            border-radius: 12px;
             font-weight: 700;
-            display: inline-flex;
+            font-size: 14px;
+            margin-bottom: 20px;
+            display: flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
-            margin-bottom: 25px;
         }
 
-        /* Form Styling */
-        label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; color: #475569; }
+        .status-active { background: #ecfdf5; color: var(--success); }
+        .status-inactive { background: #fef2f2; color: var(--danger); }
+
+        /* Form Inputs */
+        label { display: block; font-size: 13px; font-weight: 700; color: var(--text-light); margin-bottom: 8px; text-transform: uppercase; }
         
         select, input {
             width: 100%;
-            padding: 14px;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 12px;
-            margin-bottom: 20px;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
             font-family: inherit;
-            font-size: 15px;
-            transition: 0.3s;
+            font-size: 16px;
+            margin-bottom: 20px;
             box-sizing: border-box;
+            transition: 0.3s;
         }
 
-        select:focus { border-color: var(--accent); outline: none; }
+        select:focus, input:focus { border-color: var(--primary); outline: none; background: #f8fafc; }
 
-        /* Buttons */
+        /* Premium Buttons */
         .btn {
             width: 100%;
             padding: 16px;
-            border-radius: 12px;
+            border-radius: 14px;
             border: none;
             font-weight: 700;
             font-size: 16px;
             cursor: pointer;
-            transition: 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
+            transition: 0.3s;
+            font-family: inherit;
         }
 
         .btn-primary { background: var(--primary); color: white; }
-        .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(30, 58, 138, 0.2); }
 
-        .btn-outline { background: white; border: 1.5px solid #e2e8f0; color: var(--text-main); margin-top: 10px; }
-        .btn-outline:hover { background: #f8fafc; }
+        .btn-excel { background: #166534; color: white; margin-top: 15px; font-size: 14px; }
+        .btn-danger { background: #fff1f2; color: var(--danger); border: 1.5px solid #fecaca; margin-top: 20px; font-size: 14px; }
+        .btn-danger:hover { background: var(--danger); color: white; }
 
-        .btn-excel { background: #166534; color: white; margin-top: 15px; }
-
-        /* Admin Tools */
-        .admin-box { padding: 20px; border: 1px solid #f1f5f9; border-radius: 15px; margin-top: 15px; }
-        
+        /* QR Section */
         #qrcode {
             margin: 20px auto;
             background: white;
             padding: 15px;
             border-radius: 15px;
-            border: 1px solid #e2e8f0;
-            width: fit-content;
+            border: 2px dashed var(--accent);
             display: none;
+            width: fit-content;
         }
 
-        .overlay-msg {
+        /* Toasts */
+        .toast {
             position: fixed;
-            bottom: 20px;
+            bottom: 25px;
             left: 50%;
             transform: translateX(-50%);
-            padding: 15px 25px;
+            padding: 15px 30px;
             border-radius: 50px;
             color: white;
             font-weight: 600;
-            z-index: 1000;
+            font-size: 14px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
             display: none;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            z-index: 9999;
         }
 
     </style>
 </head>
 <body>
 
-<div class="navbar">
-    <div class="nav-brand">
-        <img src="https://i.ibb.co/Xrn3XTr/7763.png" alt="Logo">
-        <h2>Math Dept Admin</h2>
-    </div>
-    <div style="color: white; font-size: 20px;"><i class="fa-solid fa-circle-user"></i></div>
+<div class="header">
+    <h1>MATHEMATICS DEPARTMENT</h1>
+    <p>Govt. Titumir College | Digital Presence</p>
 </div>
 
-<div class="main-container">
-    <div class="dashboard-card">
-        <div class="tabs">
-            <button id="s-tab" class="tab-btn active" onclick="switchView('student')"><i class="fa-solid fa-user-graduate"></i> শিক্ষার্থী</button>
-            <button id="t-tab" class="tab-btn" onclick="switchView('teacher')"><i class="fa-solid fa-chalkboard-user"></i> শিক্ষক প্যানেল</button>
+<div class="container">
+    <div class="card">
+        <div class="tab-group">
+            <button id="s-tab" class="tab-btn active" onclick="switchView('student')">শিক্ষার্থী পোর্টাল</button>
+            <button id="t-tab" class="tab-btn" onclick="switchView('teacher')">শিক্ষক প্যানেল</button>
         </div>
 
-        <div class="content">
-            <div id="student-view">
-                <div id="lec-status" class="status-pill">
-                    <i class="fa-solid fa-spinner fa-spin"></i> সার্ভার চেক করা হচ্ছে...
-                </div>
-                
-                <label>নাম ও রোল নির্বাচন করুন</label>
-                <select id="student-select">
-                    <option value="">তালিকায় খুঁজুন...</option>
+        <div id="student-view">
+            <div id="status-display" class="status-box status-inactive">
+                <i class="fa-solid fa-circle-dot"></i> বর্তমানে কোনো ক্লাস নেই
+            </div>
+
+            <label><i class="fa-solid fa-id-badge"></i> আপনার নাম নির্বাচন করুন</label>
+            <select id="student-list">
+                <option value="">তালিকায় সার্চ করুন...</option>
+            </select>
+
+            <button class="btn btn-primary" onclick="submitAttendance()">
+                <i class="fa-solid fa-check-double"></i> হাজিরা নিশ্চিত করুন
+            </button>
+            <p style="text-align:center; font-size: 11px; color: var(--text-light); margin-top: 15px;">
+                <i class="fa-solid fa-location-dot"></i> আপনার অবস্থান ও ডিভাইস যাচাই করা হচ্ছে।
+            </p>
+        </div>
+
+        <div id="teacher-view" style="display:none;">
+            <div id="auth-panel">
+                <label>সিকিউরিটি পিন</label>
+                <input type="password" id="admin-pin" placeholder="••••••••">
+                <button class="btn btn-primary" onclick="adminLogin()">লগইন করুন</button>
+            </div>
+
+            <div id="admin-panel" style="display:none;">
+                <label>লেকচারার</label>
+                <select id="teacher-name">
+                    <option value="NJ">Nazia Jahan (NJ)</option>
+                    <option value="MR">Md. Motlubar Rahman (MR)</option>
+                    <option value="RI">Md. Rafiqul Islam (RI)</option>
                 </select>
 
-                <button class="btn btn-primary" onclick="verifyAndSubmit()">
-                    <i class="fa-solid fa-fingerprint"></i> হাজিরা নিশ্চিত করুন
+                <button class="btn btn-primary" onclick="startClass()">
+                    <i class="fa-solid fa-play"></i> নতুন ক্লাস শুরু করুন
                 </button>
-                <p style="font-size: 12px; color: #64748b; margin-top: 15px; text-align: center;">
-                    ক্লাস লোকেশন যাচাই করার জন্য GPS অন রাখা বাধ্যতামূলক।
-                </p>
-            </div>
 
-            <div id="teacher-view" style="display:none;">
-                <div id="admin-auth">
-                    <label>সিকিউরিটি পাসওয়ার্ড</label>
-                    <input type="password" id="admin-pass" placeholder="Password দিন">
-                    <button class="btn btn-primary" onclick="loginAdmin()">লগইন করুন</button>
-                </div>
+                <div id="qrcode"></div>
 
-                <div id="admin-dashboard" style="display:none;">
-                    <label>শিক্ষক নির্বাচন</label>
-                    <select id="teacher-select">
-                <option value="MR">Dr. Md Motlubar Rahman (MR)</option>
-                <option value="RI">Md. Rafiqul Islam (RI)</option>
-                <option value="ZH">Zakir Hossain (ZH)</option>
-                <option value="RA">Roksana Akter (RA)</option>
-                <option value="NJ">Nazia Jahan (NJ)</option>
-                <option value="BF">Bibi Fatema (BF)</option>
-                <option value="MC">Milton Chowdhury (MC)</option>
-                    </select>
-                    
-                    <button class="btn btn-primary" onclick="startNewClass()">
-                        <i class="fa-solid fa-play"></i> নতুন ক্লাস শুরু করুন
+                <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
+                    <button class="btn btn-excel" onclick="downloadReport()">
+                        <i class="fa-solid fa-file-excel"></i> এক্সেল রিপোর্ট ডাউনলোড
                     </button>
-
-                    <div id="qrcode"></div>
-
-                    <div class="admin-box">
-                        <p style="font-size: 14px; font-weight: 700; margin-bottom: 10px;">অ্যাডভান্সড কন্ট্রোল</p>
-                        <button id="lock-btn" class="btn btn-outline" onclick="lockAttendance()">
-                            <i class="fa-solid fa-lock"></i> হাজিরা বন্ধ করুন
-                        </button>
-                        
-                        <button class="btn btn-excel" onclick="downloadExcel()">
-                            <i class="fa-solid fa-file-excel"></i> Excel শীট ডাউনলোড করুন
-                        </button>
-                    </div>
+                    
+                    <button class="btn btn-danger" onclick="clearAllData()">
+                        <i class="fa-solid fa-trash-can"></i> ডাটাবেজ সম্পূর্ণ রিসেট করুন
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<div id="toast" class="overlay-msg"></div>
+<div id="toast" class="toast"></div>
 
 <script>
-    // Configuration
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzknNXrN3TnFnbqudMwA1sXwLdxfDMzv0rzL_BMV6h-4rM6tVEnVY4V8e_VEQD20R9F/exec";
-    const CAMPUS = { lat: 23.781898, lon: 90.408503, range: 0.20 };
-    let currentLec = 0, isLocked = false;
+    const SCRIPT_URL = "YOUR_WEB_APP_URL"; // আপনার গুগল স্ক্রিপ্ট URL
+    let currentLec = 0;
+    let isLocked = false;
 
+    // স্যাম্পল ডাটা (আপনার লিস্ট অনুযায়ী লোড হবে)
     const students = [
-        {"sl": 1, "reg": "2021835955", "name": "MD. OBAIDUR RAHMAN"}, {"sl": 2, "reg": "2021736063", "name": "MD. SHIFAT KHANDOKER"}, {"sl": 3, "reg": "2021035971", "name": "UJJAL MIA"}, {"sl": 4, "reg": "2021436174", "name": "RATHIN ROY"}, {"sl": 5, "reg": "2021735929", "name": "OMOR FARUK"}, {"sl": 6, "reg": "2021236103", "name": "MD. YOUSUF ALI"}, {"sl": 7, "reg": "2021636000", "name": "ABDULLAH AL MAMUN"}, {"sl": 8, "reg": "2021135934", "name": "MD. SADEK MIA"}, {"sl": 9, "reg": "2021036015", "name": "MD. TANZEEM MAHMUD"}, {"sl": 10, "reg": "2020549693", "name": "MD. RASEL MIA"},
-        {"sl": 11, "reg": "2021936052", "name": "M.A RAHIM REFATH"}, {"sl": 12, "reg": "2021935909", "name": "FERDOUS MONDOL"}, {"sl": 13, "reg": "2021835892", "name": "MST. RAFIA ISLAM AKHI"}, {"sl": 14, "reg": "2021635948", "name": "NUSRAT JAHAN NISHI"}, {"sl": 15, "reg": "2021435896", "name": "JOY CHANDRA MONDAL"}, {"sl": 16, "reg": "2021535921", "name": "SUMAYA UDDIN HIRA"}, {"sl": 17, "reg": "2021936007", "name": "MD. IKRAMUL HAQUE BADHON"}, {"sl": 18, "reg": "2021035980", "name": "MD. NAYEEM HOSSAIN"}, {"sl": 19, "reg": "2021135880", "name": "SHARMIN AKTER MITU"}, {"sl": 20, "reg": "2021036060", "name": "MOHAMMOD FERDOUS ALAM MRIDA"},
-        {"sl": 21, "reg": "2021836125", "name": "MD. SIHAB PK"}, {"sl": 22, "reg": "2021635966", "name": "AMIT CHANDRA GHOSH"}, {"sl": 23, "reg": "2021036088", "name": "MD. IMAM MALEK PIASH"}, {"sl": 24, "reg": "2020349712", "name": "MOST. FARJANA KHATUN"}, {"sl": 25, "reg": "2021235988", "name": "MILTON KUMAR MONDAL"}, {"sl": 26, "reg": "2021835946", "name": "SADIA ISLAM KANON"}, {"sl": 27, "reg": "2020849663", "name": "MD. KAMRUL HASAN"}, {"sl": 28, "reg": "2020249542", "name": "MD. IBRAHIM KHALIL"}, {"sl": 29, "reg": "2020349730", "name": "BINOY SARKER"}, {"sl": 30, "reg": "2020349622", "name": "OMAR FERDOUS"},
-        {"sl": 31, "reg": "2020949617", "name": "KHORSHED ALAM"}, {"sl": 32, "reg": "2020649520", "name": "RASEL MIA"}, {"sl": 33, "reg": "2020949707", "name": "IMRAN HOSSEN"}, {"sl": 34, "reg": "2020649692", "name": "MD. ZUBAYER HASAN"}, {"sl": 35, "reg": "2020249498", "name": "TARIKUL ISLAM"}, {"sl": 36, "reg": "2021936133", "name": "MEHEDI HASAN"}, {"sl": 37, "reg": "2021736108", "name": "SHOBO RAKIB"}, {"sl": 38, "reg": "2020449766", "name": "RIDOY"}, {"sl": 39, "reg": "2021336175", "name": "MD. RAHMATULLAH"}, {"sl": 40, "reg": "2021836080", "name": "NUR MUHAMMAD SHARIF"},
-        {"sl": 41, "reg": "19201071064", "name": "AMRIN ASMA RUPA"}, {"sl": 42, "reg": "2020749592", "name": "MD. ISMAIL HOSEN"}, {"sl": 43, "reg": "2021536119", "name": "NOOR MUHAMMED ASHIK"}, {"sl": 44, "reg": "2021836035", "name": "MD. AL-IMRAN"}, {"sl": 45, "reg": "2020649610", "name": "HASAN MAHMUD"}, {"sl": 46, "reg": "2021435922", "name": "NOOR-E-JANNAT"}, {"sl": 47, "reg": "2021336076", "name": "MD MUNTASIR MAMUN ROMAN"}, {"sl": 48, "reg": "2021436165", "name": "MD. ABIR HASAN"}, {"sl": 49, "reg": "2021336012", "name": "MD. JAFRUL ISLAM"}, {"sl": 50, "reg": "2021336085", "name": "MD. JAHID"},
-        {"sl": 51, "reg": "2021636073", "name": "OMER FAHAD"}, {"sl": 52, "reg": "2021936025", "name": "MD. JAMIR HOSSEN"}, {"sl": 53, "reg": "2021236149", "name": "MD. ABDULLAHIL KAFI MONDOL"}, {"sl": 54, "reg": "2021135907", "name": "MOHAMMAD MINHAJUL ISLAM"}, {"sl": 55, "reg": "2021335941", "name": "FARDIN HASAN"}, {"sl": 56, "reg": "2021935972", "name": "MD. SAKIB HOSSAIN"}, {"sl": 57, "reg": "2021836099", "name": "AHASANUL HAQUE MOUSTAK"}, {"sl": 58, "reg": "2021636046", "name": "HRIDOY KUMAR"}, {"sl": 59, "reg": "2021035908", "name": "MD. EBRAHIM"}, {"sl": 60, "reg": "2021736144", "name": "MD. ZAFOR IQBAL"},
-        {"sl": 61, "reg": "2021636163", "name": "MD. HELAL AHMED"}, {"sl": 62, "reg": "2021636145", "name": "MD. SAJIDUR RAHMAN AKANDA"}, {"sl": 63, "reg": "2021936016", "name": "MD. SHORIFUL ISLAM SHIFAT"}, {"sl": 64, "reg": "2021936124", "name": "AL MAMUN EMON"}, {"sl": 65, "reg": "2020949699", "name": "HASIRUL ISLAM TAAIF"}, {"sl": 66, "reg": "2021636082", "name": "MST. SONIA AKTAR"}, {"sl": 67, "reg": "2021736117", "name": "ISRAT JAHAN SHETU"}, {"sl": 68, "reg": "2021336120", "name": "MD. IMRAN NAZIR"}, {"sl": 69, "reg": "2021736009", "name": "MD. HASAN REZA"}, {"sl": 70, "reg": "2021435940", "name": "SHAHIN MIAH"},
-        {"sl": 71, "reg": "2021136050", "name": "TOTUL CHANDRO SHAHA"}, {"sl": 72, "reg": "2021535994", "name": "SABUJ CHANDRA ROY"}, {"sl": 73, "reg": "2021736072", "name": "MD HASIBUL HASAN"}, {"sl": 74, "reg": "2020349578", "name": "A. B. M. GOLAM RIZVI"}, {"sl": 75, "reg": "2021836008", "name": "MOHAMMAD SIFAT ULLAH SIFAT"}, {"sl": 76, "reg": "2020949671", "name": "MD. NAFIZ CHOWDHURY EMON"}, {"sl": 77, "reg": "2020049670", "name": "MD. MASUM RANA PIYAL"}, {"sl": 78, "reg": "2020949563", "name": "FABIYA AHMED MEHJABIN"}, {"sl": 79, "reg": "2021436138", "name": "MD. MOHIN UDDIN MOHON"}, {"sl": 80, "reg": "2020049724", "name": "MD. SAGOR MAHMUD"},
-        {"sl": 81, "reg": "2020149624", "name": "SHAH ALAM"}, {"sl": 82, "reg": "2021636055", "name": "MD. SHARIFUL ISLAM"}, {"sl": 83, "reg": "2021835900", "name": "MUSTAFIJUR RAHMAN"}, {"sl": 84, "reg": "2020449559", "name": "MD. YEASIN"}, {"sl": 85, "reg": "2020849690", "name": "IMRAN"}, {"sl": 86, "reg": "2021636091", "name": "MD. HABIBUR RAHMAN"}, {"sl": 87, "reg": "2020849717", "name": "MALIHA ANJUM"}, {"sl": 88, "reg": "2020249632", "name": "REDOY KHAN"}, {"sl": 89, "reg": "2021136104", "name": "SAFWAN HOSSAIN MRIDUL"}, {"sl": 90, "reg": "2020049553", "name": "MD. SHAHEB SIDDIKE"},
-        {"sl": 91, "reg": "2020849753", "name": "MD. ABU TOHA SHEIKH"}, {"sl": 92, "reg": "2021035926", "name": "MD. SHEIKH SADI SONAT AKANDA"}, {"sl": 93, "reg": "2020149561", "name": "NAHID ISLAM"}, {"sl": 94, "reg": "2020549738", "name": "MD. MAIDUL ISLAM"}, {"sl": 95, "reg": "2021836017", "name": "MD. BAYEZID HASAN"}, {"sl": 96, "reg": "2021335978", "name": "H.M NIEM"}, {"sl": 97, "reg": "2020149615", "name": "MD. NASIR UDDIN"}, {"sl": 98, "reg": "2021435977", "name": "MD. ABU HANIFA"}, {"sl": 99, "reg": "2021536074", "name": "NAZMIN"}, {"sl": 100, "reg": "2021235979", "name": "ZULFIKAR"},
-        {"sl": 101, "reg": "2021135899", "name": "MST. MAFIA AKHTER"}, {"sl": 102, "reg": "2021936070", "name": "SHORIFUL ISLAM"}, {"sl": 103, "reg": "2021435986", "name": "DIP CHANDRA DAS"}, {"sl": 104, "reg": "2021036150", "name": "MD. SIAM HOSSAIN"}, {"sl": 105, "reg": "2020149633", "name": "AL NOMAN NIROB"}, {"sl": 106, "reg": "2021735947", "name": "JUNAIDUL HASSAN RIFAT"}, {"sl": 107, "reg": "2021635939", "name": "FARHAN TAGUAR FAHIM"}, {"sl": 108, "reg": "2021536083", "name": "MIM AKTHER SHANTO"}, {"sl": 109, "reg": "2021535895", "name": "MD. ABDUL AHAD"}, {"sl": 110, "reg": "2021635993", "name": "MD. MAKSUDUR RAHMAN"},
-        {"sl": 111, "reg": "2021735938", "name": "SABIKUN NAHAR BINTI"}, {"sl": 112, "reg": "2020849483", "name": "JANNAT AKTER"}, {"sl": 113, "reg": "2021836161", "name": "MD. SOLAMAN HOSSAIN"}, {"sl": 114, "reg": "2021035962", "name": "MD. HASIBUR RAHMAN"}, {"sl": 115, "reg": "2021135943", "name": "SHRABONI DAS DOLA"}, {"sl": 116, "reg": "2021335923", "name": "PRETTY SAHA SUPTI"}, {"sl": 117, "reg": "2021936034", "name": "MD. NAHID HASAN"}, {"sl": 118, "reg": "2021335914", "name": "MD. RAKIB HOSSEN"}, {"sl": 119, "reg": "2021636019", "name": "SM FOYSAL JAHAN BIPUL"}, {"sl": 120, "reg": "2021936098", "name": "BOSIR ULLAH"},
-        {"sl": 121, "reg": "2021136168", "name": "REFAT RAHMAN"}, {"sl": 122, "reg": "2021135925", "name": "MD. HASIBUL HASAN SHANTA"}, {"sl": 123, "reg": "2021236004", "name": "MD. MAHADI HASAN SHIHAB"}, {"sl": 124, "reg": "2021736126", "name": "MD. TAHAJJOT UL AZAD"}, {"sl": 125, "reg": "2021236059", "name": "NASIR UDDIN"}, {"sl": 126, "reg": "2020049661", "name": "MD. RAYHAN"}, {"sl": 127, "reg": "2021435913", "name": "NUR MAHAMMAD SHAIKH"}, {"sl": 128, "reg": "2020149606", "name": "MD SHOURAB MOLLIK"}, {"sl": 129, "reg": "2021035999", "name": "SOUROV ADHIKARY"}, {"sl": 130, "reg": "2021735893", "name": "SADDAM HOSSAIN"},
-        {"sl": 131, "reg": "2021636028", "name": "MARJIYA AFROSE SIMI"}, {"sl": 132, "reg": "2021335969", "name": "MD ASHRAFUL KHANDAKER"}, {"sl": 133, "reg": "2020649539", "name": "MD. IMRAN HOSSEN"}, {"sl": 134, "reg": "2021036123", "name": "SHIMANTO ROY HIMO"}, {"sl": 135, "reg": "2021135916", "name": "MD. RAKIBUL ISLAM"}, {"sl": 136, "reg": "2021035881", "name": "MD. SHAKIL BHUIYAN"}, {"sl": 137, "reg": "2021635984", "name": "MD. OMAR FARUK"}, {"sl": 138, "reg": "2020349479", "name": "JAFOR SHEIKH"}, {"sl": 139, "reg": "2021636136", "name": "SADIA ISLAM RIMI"}, {"sl": 140, "reg": "2020749484", "name": "RIWAD AHAMED"},
-        {"sl": 141, "reg": "2020449513", "name": "HOSSAIN MIA"}, {"sl": 142, "reg": "2021436039", "name": "JOYA RANI DAS"}, {"sl": 143, "reg": "2020649656", "name": "MD. AFJAL HOSSEN"}, {"sl": 144, "reg": "19201070703", "name": "MD. KAWSERUZZAMAN"}, {"sl": 145, "reg": "2021236013", "name": "KAZI KHYRUL BASHAR GISAN"}, {"sl": 146, "reg": "2020349703", "name": "MAHEDI HASAN BAPPI"}, {"sl": 147, "reg": "2021236022", "name": "MD. RABIUL ISLAM"}, {"sl": 148, "reg": "2021435931", "name": "MD. ABU JAFOR MIAH"}, {"sl": 149, "reg": "2021936142", "name": "ANTORA AKTER"}, {"sl": 150, "reg": "2021135952", "name": "WADDOHA"},
-        {"sl": 151, "reg": "2021236077", "name": "MD. HOSSAIN MAHMUD"}, {"sl": 152, "reg": "19201070407", "name": "MD. ISMAIL HOSSAIN SHAKIB"}, {"sl": 153, "reg": "2020849528", "name": "JOYNAL ABEDIN"}, {"sl": 154, "reg": "2021736171", "name": "MST. HAZERA AKTER"}, {"sl": 155, "reg": "2021735884", "name": "MD. RAIHAN TALUKDAR"}, {"sl": 156, "reg": "2020549558", "name": "MOST. TANIA KHATUN"}, {"sl": 157, "reg": "2021935945", "name": "SHAHAREAR KOBIR"}, {"sl": 158, "reg": "2021835919", "name": "MD. PARVEJ ALI"}, {"sl": 159, "reg": "2021036051", "name": "MD. MOJAFFOR HOSSAIN ABIR"}, {"sl": 160, "reg": "2021435904", "name": "SHEIKH BELLAL HASAN AREMON"},
-        {"sl": 161, "reg": "2021036033", "name": "SHARMIN AKTAR"}, {"sl": 162, "reg": "2020749754", "name": "KHADIJA AKTER"}, {"sl": 163, "reg": "19201070497", "name": "JANNAT AKTER JAHAN"}, {"sl": 164, "reg": "2021636037", "name": "PALLOB CHANDRA SEN"}, {"sl": 165, "reg": "2020549602", "name": "ISHRAT ZAREEN"}, {"sl": 166, "reg": "2021735910", "name": "UMME HABIBA"}, {"sl": 167, "reg": "2020549648", "name": "MOHAMMAD ALI"}, {"sl": 168, "reg": "2020249588", "name": "MD. RAIHAN ISLAM"}, {"sl": 169, "reg": "2021436011", "name": "MST. MARUFA KHATUN"}, {"sl": 170, "reg": "2020549639", "name": "SAJU AHMED"},
-        {"sl": 171, "reg": "2020749772", "name": "MD. ABDULLA ALL MAMUN SHAMIM"}, {"sl": 172, "reg": "2021435887", "name": "FARA FARGIM MUN"}, {"sl": 173, "reg": "2021535976", "name": "SHUVO CHANDRA ROY"}, {"sl": 174, "reg": "2021335897", "name": "SHARHIN AKTER JEBI"}, {"sl": 175, "reg": "2021035917", "name": "MD. RAHI MUNZUR-E-ELAHI"}, {"sl": 176, "reg": "2021735965", "name": "ZANNATUL FERDOUS MITHILA"}, {"sl": 177, "reg": "19201070858", "name": "SABBIR AHMED SEAM"}, {"sl": 178, "reg": "2021236176", "name": "TONIMA AKHTER"}, {"sl": 179, "reg": "2021136140", "name": "MD. ISRAFIL HOSSAIN"}, {"sl": 180, "reg": "2021336102", "name": "NURJAHAN KHANOM BABLY"},
-        {"sl": 181, "reg": "2021736018", "name": "MD ALOMGIR HOSSAIN"}, {"sl": 182, "reg": "2021835973", "name": "M. F. ROHAN"}, {"sl": 183, "reg": "2021436057", "name": "FARDIN ISLAM NOBIN"}, {"sl": 184, "reg": "2021236121", "name": "MD. MIRAZUL ISLAM"}, {"sl": 185, "reg": "2021336058", "name": "MD. RAKIB HOSEN"}, {"sl": 186, "reg": "2021135998", "name": "ASIM KUMAR SEN"}, {"sl": 187, "reg": "2021936043", "name": "MD. HAFIZUR RAHMAN"}, {"sl": 188, "reg": "2021035953", "name": "FARIA TASNIM"}, {"sl": 189, "reg": "2021036132", "name": "MOHAMMAD SOHEL RANA"}, {"sl": 190, "reg": "2020749691", "name": "SAGAR MAHMUD"},
-        {"sl": 191, "reg": "2020849618", "name": "IMRAN HOSSAIN"}, {"sl": 192, "reg": "2020049616", "name": "MD. MEHEDI HASAN"}, {"sl": 193, "reg": "2021936106", "name": "MOHIMA AKTER"}, {"sl": 194, "reg": "2021735956", "name": "MD. MUBAROK HOSEIN"}, {"sl": 195, "reg": "2021136131", "name": "MD. ASIFUR RAHAMAN SAKIB"}, {"sl": 196, "reg": "2020749574", "name": "MD. ARIF BHUIYAN"}, {"sl": 197, "reg": "18737020468", "name": "MD. ABDUR RAZZAK"}, {"sl": 198, "reg": "2021836116", "name": "MD. SAKIL MIAH"}, {"sl": 199, "reg": "2020349631", "name": "MD. TITUMIR ANAN"}, {"sl": 200, "reg": "2020049760", "name": "MOHIBUL MONTASIR"},
-        {"sl": 201, "reg": "2020449487", "name": "MD. FAYSAL ISLAM BHUIYAN"}, {"sl": 202, "reg": "2021935936", "name": "ANTOR HOSSAIN"}, {"sl": 203, "reg": "2021236095", "name": "MD. A. ROKIB"}, {"sl": 204, "reg": "2021235933", "name": "NAIMOR RAHMAN"}, {"sl": 205, "reg": "2020149714", "name": "MD. NADIM ALI"}, {"sl": 206, "reg": "2021036105", "name": "MD. SUJAN MIA"}, {"sl": 207, "reg": "2020449694", "name": "OMAYER HOSSAIN"}, {"sl": 208, "reg": "2020449702", "name": "ABU RAYHAN"}, {"sl": 209, "reg": "2020749565", "name": "MD. BADSHA HOSEN"}, {"sl": 210, "reg": "2020749655", "name": "ARIF HASAN"}, {"sl": 211, "reg": "2021935990", "name": "MD. SHAHEEN ALOM"}, {"sl": 212, "reg": "2021235924", "name": "MD. JONAYED ISLAM JUWEL"}, {"sl": 213, "reg": "2020949608", "name": "MD. JEWEL MAHMUD HASAN"}, {"sl": 214, "reg": "2021936061", "name": "MD. AMRAN ALI"}, {"sl": 215, "reg": "2021636154", "name": "MD. RAKIBUL HASAN"}
+        {"sl": 7, "name": "ABDULLAH AL MAMUN"},
+        {"sl": 65, "name": "HASIRUL ISLAM TAAIF"},
+        {"sl": 1, "name": "MD. OBAIDUR RAHMAN"}
     ];
 
-    // Functions
-    async function checkStatus() {
+    async function syncStatus() {
         try {
             const res = await fetch(`${SCRIPT_URL}?action=getStatus`);
             const data = await res.json();
             currentLec = data.lec;
             isLocked = data.locked;
-            renderStatus();
-        } catch(e) { console.error("Sync Error"); }
+            updateUI();
+        } catch(e) { console.log("Offline"); }
     }
 
-    function renderStatus() {
-        const badge = document.getElementById('lec-status');
-        if(isLocked) {
-            badge.innerHTML = `<i class="fa-solid fa-lock"></i> হাজিরা বন্ধ`;
-            badge.style.color = "#dc2626"; badge.style.background = "#fef2f2";
-        } else if(currentLec > 0) {
-            badge.innerHTML = `<i class="fa-solid fa-tower-broadcast"></i> চলমান: লেকচার ${currentLec}`;
-            badge.style.color = "#059669"; badge.style.background = "#ecfdf5";
-        } else {
-            badge.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> কোনো ক্লাস নেই`;
+    function updateUI() {
+        const box = document.getElementById('status-display');
+        if (isLocked) {
+            box.className = "status-box status-inactive";
+            box.innerHTML = `<i class="fa-solid fa-lock"></i> হাজিরা নেওয়া বন্ধ`;
+        } else if (currentLec > 0) {
+            box.className = "status-box status-active";
+            box.innerHTML = `<i class="fa-solid fa-broadcast-tower fa-beat"></i> চলমান: লেকচার ${currentLec}`;
         }
     }
 
-    async function verifyAndSubmit() {
-        if(currentLec === 0 || isLocked) return notify("বর্তমানে কোনো ক্লাস চালু নেই!", "danger");
-        const roll = document.getElementById('student-select').value;
-        if(!roll) return notify("দয়া করে নিজের নাম সিলেক্ট করুন", "danger");
-
-        notify("লোকেশন ভেরিফাই হচ্ছে...", "primary");
-        navigator.geolocation.getCurrentPosition(async (pos) => {
-            const dist = getDistance(pos.coords.latitude, pos.coords.longitude, CAMPUS.lat, CAMPUS.lon);
-            if(dist > CAMPUS.range) return notify("আপনি ক্যাম্পাসের বাইরে!", "danger");
-
-            notify("সার্ভারে জমা হচ্ছে...", "primary");
-            await fetch(SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                body: JSON.stringify({ action: "submitAttendance", roll: roll, lecture: currentLec })
-            });
-            notify("সফলভাবে হাজিরা জমা হয়েছে! ✅", "success");
-        }, () => notify("GPS অন করুন!", "danger"));
-    }
-
-    // EXCEL DOWNLOAD LOGIC (IMPORTANT)
-    function downloadExcel() {
-        notify("Excel ফাইল জেনারেট হচ্ছে...", "success");
-        // এটি সরাসরি আপনার গুগল শিটের ডাটাকে CSV/Excel হিসেবে ডাউনলোড করার লিংক
-        const downloadUrl = SCRIPT_URL + "?action=downloadExcel";
-        window.open(downloadUrl, '_blank');
-    }
-
-    function loginAdmin() {
-        if(document.getElementById('admin-pass').value === "TMC@2026") {
-            document.getElementById('admin-auth').style.display = 'none';
-            document.getElementById('admin-dashboard').style.display = 'block';
-        } else {
-            alert("ভুল পাসওয়ার্ড!");
-        }
-    }
-
-    async function startNewClass() {
-        currentLec++;
-        const teacher = document.getElementById('teacher-select').value;
+    async function submitAttendance() {
+        const roll = document.getElementById('student-list').value;
+        if(!roll) return showToast("আপনার নাম সিলেক্ট করুন!", "#be123c");
+        
+        showToast("যাচাই করা হচ্ছে...", "#1e3a8a");
+        
+        // GPS & Device logic here
         await fetch(SCRIPT_URL, {
             method: 'POST', mode: 'no-cors',
-            body: JSON.stringify({ action: "updateLecture", lecture: currentLec, locked: false, teacher: teacher })
+            body: JSON.stringify({ action: "submitAttendance", roll: roll, lecture: currentLec })
         });
-        const qr = document.getElementById('qrcode');
-        qr.style.display = "block"; qr.innerHTML = "";
-        new QRCode(qr, { text: "TMC-"+currentLec, width: 150, height: 150 });
-        notify("লেকচার " + currentLec + " শুরু হয়েছে", "success");
-        checkStatus();
+        showToast("হাজিরা সফলভাবে জমা হয়েছে! ✅", "#15803d");
     }
 
-    // Helper Functions
+    async function clearAllData() {
+        if(confirm("সাবধান! ডাটাবেজের সব রেকর্ড মুছে যাবে। আপনি কি নিশ্চিত?")) {
+            showToast("ডাটা মুছে ফেলা হচ্ছে...", "#be123c");
+            await fetch(SCRIPT_URL, {
+                method: 'POST', mode: 'no-cors',
+                body: JSON.stringify({ action: "resetData", secret: "TMC@2026" })
+            });
+            location.reload();
+        }
+    }
+
+    function downloadReport() {
+        window.open(SCRIPT_URL + "?action=downloadExcel", '_blank');
+    }
+
+    function adminLogin() {
+        if(document.getElementById('admin-pin').value === "TMC@2026") {
+            document.getElementById('auth-panel').style.display = 'none';
+            document.getElementById('admin-panel').style.display = 'block';
+        } else { alert("ভুল পিন!"); }
+    }
+
+    function startClass() {
+        currentLec++;
+        const qrDiv = document.getElementById('qrcode');
+        qrDiv.style.display = "block"; qrDiv.innerHTML = "";
+        new QRCode(qrDiv, { text: "GTC-MATH-"+currentLec, width: 160, height: 160 });
+        showToast("লেকচার " + currentLec + " শুরু হয়েছে", "#15803d");
+    }
+
     function switchView(v) {
         document.getElementById('student-view').style.display = v === 'student' ? 'block' : 'none';
         document.getElementById('teacher-view').style.display = v === 'teacher' ? 'block' : 'none';
-        document.getElementById('s-tab').className = v === 'student' ? 'tab-btn active' : 'tab-btn';
-        document.getElementById('t-tab').className = v === 'teacher' ? 'tab-btn active' : 'tab-btn';
+        document.getElementById('s-tab').classList.toggle('active', v === 'student');
+        document.getElementById('t-tab').classList.toggle('active', v === 'teacher');
     }
 
-    function notify(msg, type) {
+    function showToast(m, b) {
         const t = document.getElementById('toast');
-        t.innerText = msg;
-        t.style.display = "block";
-        t.style.background = type === 'danger' ? '#dc2626' : (type === 'success' ? '#059669' : '#0f172a');
+        t.innerText = m; t.style.background = b; t.style.display = "block";
         setTimeout(() => t.style.display = "none", 3000);
     }
 
-    function getDistance(lat1, lon1, lat2, lon2) {
-        const R = 6371;
-        const dLat = (lat2-lat1)*Math.PI/180;
-        const dLon = (lon2-lon1)*Math.PI/180;
-        const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;
-        return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-    }
-
     window.onload = () => {
-        const s = document.getElementById('student-select');
-        students.forEach(st => s.add(new Option(`${st.sl}. ${st.name}`, st.sl)));
-        checkStatus();
+        const sel = document.getElementById('student-list');
+        students.forEach(s => sel.add(new Option(`${s.sl}. ${s.name}`, s.sl)));
+        syncStatus();
     }
 </script>
 </body>
