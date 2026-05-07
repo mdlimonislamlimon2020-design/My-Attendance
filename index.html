@@ -154,28 +154,31 @@
             </div>
         </div>
 
-        <div id="student-section" style="display:none;">
-            <div id="live-indicator" class="status-badge no-class">
-                <i class="fa-solid fa-spinner fa-spin"></i> স্ট্যাটাস চেক হচ্ছে...
-            </div>
-            
-            <div class="input-group">
-                <label>শিক্ষার্থীর নাম নির্বাচন করুন</label>
-                <select id="std-name">
-                    <option value="">তালিকায় খুঁজুন...</option>
-                </select>
-            </div>
-            <button class="btn btn-primary" id="att-btn" onclick="postAttendance()" disabled>
-                <i class="fa-solid fa-fingerprint"></i> হাজিরা দিন
-            </button>
+      <div id="student-section" style="display:none;">
+    <div id="live-indicator" class="status-badge no-class">
+        <i class="fa-solid fa-spinner fa-spin"></i> স্ট্যাটাস চেক হচ্ছে...
+    </div>
+    
+    <div class="input-group">
+        <label>রোল/সিরিয়াল নম্বর দিয়ে খুঁজুন</label>
+        <div style="position: relative;">
+            <input type="number" id="roll-search" placeholder="উদা: 07" oninput="searchStudent()">
+            <i class="fa-solid fa-search" style="position: absolute; right: 15px; top: 18px; color: #cbd5e1;"></i>
         </div>
     </div>
+
+    <div class="input-group" id="name-display-group" style="display:none;">
+        <label>শিক্ষার্থীর নাম (অটো-ডিটেক্টেড)</label>
+        <input type="text" id="detected-name" readonly style="background: #f1f5f9; border: 2px solid var(--primary); font-weight: 700;">
+    </div>
+
+    <button class="btn btn-primary" id="att-btn" onclick="postAttendance()" disabled>
+        <i class="fa-solid fa-fingerprint"></i> হাজিরা দিন
+    </button>
 </div>
 
-<div id="toast" class="toast"></div>
-
 <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwltULWSs-6NZHnuHjQeoYXMNc0mEAGGCDKzncNq7n_9VlWRvIHN3yjHVMHaKOEGXyl/exec"; // এখানে আপনার URL বসান
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxohmf6DvUMq0r272zOfIkI1mQScIiwDlJL0s3ISPC2AQgu5tWsQU-gQAInfTWu6k2OJQ/exec"; // এখানে আপনার URL বসান
     let currentLec = 0;
     let liveTimer;
 
@@ -203,64 +206,48 @@
         {"sl": 201, "reg": "2020449487", "name": "MD. FAYSAL ISLAM BHUIYAN"}, {"sl": 202, "reg": "2021935936", "name": "ANTOR HOSSAIN"}, {"sl": 203, "reg": "2021236095", "name": "MD. A. ROKIB"}, {"sl": 204, "reg": "2021235933", "name": "NAIMOR RAHMAN"}, {"sl": 205, "reg": "2020149714", "name": "MD. NADIM ALI"}, {"sl": 206, "reg": "2021036105", "name": "MD. SUJAN MIA"}, {"sl": 207, "reg": "2020449694", "name": "OMAYER HOSSAIN"}, {"sl": 208, "reg": "2020449702", "name": "ABU RAYHAN"}, {"sl": 209, "reg": "2020749565", "name": "MD. BADSHA HOSEN"}, {"sl": 210, "reg": "2020749655", "name": "ARIF HASAN"}, {"sl": 211, "reg": "2021935990", "name": "MD. SHAHEEN ALOM"}, {"sl": 212, "reg": "2021235924", "name": "MD. JONAYED ISLAM JUWEL"}, {"sl": 213, "reg": "2020949608", "name": "MD. JEWEL MAHMUD HASAN"}, {"sl": 214, "reg": "2021936061", "name": "MD. AMRAN ALI"}, {"sl": 215, "reg": "2021636154", "name": "MD. RAKIBUL HASAN"}
     ];
 
+function searchStudent() {
+    const rollInput = document.getElementById('roll-search').value.trim();
+    const nameInput = document.getElementById('detected-name');
+    const group = document.getElementById('name-display-group');
+    const btn = document.getElementById('att-btn');
 
-    async function syncStatus() {
-        const badge = document.getElementById('live-indicator');
-        try {
-            const res = await fetch(`${SCRIPT_URL}?action=getStatus`);
-            const data = await res.json();
-            currentLec = parseInt(data.lec);
-            
-            if(currentLec > 0) {
-                badge.className = "status-badge active-class";
-                badge.innerHTML = `<i class="fa-solid fa-satellite-dish fa-fade"></i> লেকচার ${currentLec} চালু আছে`;
-                document.getElementById('att-btn').disabled = false;
-            } else {
-                badge.className = "status-badge no-class";
-                badge.innerHTML = `<i class="fa-solid fa-lock"></i> বর্তমানে ক্লাস বন্ধ`;
-                document.getElementById('att-btn').disabled = true;
-            }
-        } catch(e) { console.log("Offline"); }
+    if (studentData[rollInput]) {
+        nameInput.value = studentData[rollInput];
+        group.style.display = 'block';
+        // ক্লাস চালু থাকলে তবেই বাটন এনাবেল হবে
+        if(currentLec > 0) btn.disabled = false;
+        notify("শিক্ষার্থী খুঁজে পাওয়া গেছে", "#10b981");
+    } else {
+        nameInput.value = "";
+        group.style.display = 'none';
+        btn.disabled = true;
     }
+}
 
-    async function fetchTableData() {
-        try {
-            const res = await fetch(`${SCRIPT_URL}?action=getRecords`);
-            const data = await res.json();
-            const tbody = document.getElementById('table-body');
-            tbody.innerHTML = "";
-            data.slice().reverse().forEach(r => {
-                const tr = `<tr><td>${r.time}</td><td><b>${r.roll}</b></td><td>${r.lec}</td></tr>`;
-                tbody.innerHTML += tr;
-            });
-        } catch(e) { }
-    }
-
-    async function initiateClass() {
-        const teacher = document.getElementById('t-name').value;
-        notify("সার্ভার আপডেট হচ্ছে...", "#1e3a8a");
-        await fetch(SCRIPT_URL, {
-            method: 'POST', mode: 'no-cors',
-            body: JSON.stringify({ action: "startClass", teacher: teacher })
-        });
-        setTimeout(async () => {
-            await syncStatus();
-            const qr = document.getElementById('qrcode');
-            qr.style.display = 'block'; qr.innerHTML = '';
-            new QRCode(qr, { text: "GTC-MATH-"+currentLec, width: 160, height: 160 });
-            notify("ক্লাস শুরু হয়েছে!", "#10b981");
-        }, 1500);
-    }
-
-    async function postAttendance() {
-        const roll = document.getElementById('std-name').value;
-        if(!roll) return notify("নাম সিলেক্ট করুন!", "#e11d48");
-        notify("জমা হচ্ছে...", "#1e3a8a");
-        await fetch(SCRIPT_URL, {
-            method: 'POST', mode: 'no-cors',
-            body: JSON.stringify({ action: "submit", roll: roll, lec: currentLec })
-        });
-        notify("হাজিরা সফল! ✅", "#10b981");
+// হাজিরা পাঠানোর সময় এই রোলটি ব্যবহার হবে
+async function postAttendance() {
+    const roll = document.getElementById('roll-search').value;
+    const name = document.getElementById('detected-name').value;
+    
+    if(!roll || !name) return notify("সঠিক রোল দিন!", "#e11d48");
+    
+    notify("হাজিরা জমা হচ্ছে...", "#1e3a8a");
+    await fetch(SCRIPT_URL, {
+        method: 'POST', mode: 'no-cors',
+        body: JSON.stringify({ 
+            action: "submit", 
+            roll: roll, 
+            name: name, // নামটিও পাঠিয়ে দিচ্ছি ব্যাকেন্ডে
+            lec: currentLec 
+        })
+    });
+    notify("হাজিরা সফল! ✅", "#10b981");
+    
+    // হাজিরা শেষে ইনপুট ক্লিয়ার করা
+    document.getElementById('roll-search').value = "";
+    document.getElementById('name-display-group').style.display = 'none';
+}
     }
 
     function login() {
