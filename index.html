@@ -3,258 +3,220 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math Dept | Digital Attendance Pro</title>
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>Math Dept | Professional Attendance System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    
     <style>
         :root {
-            --primary: #1e3a8a;
-            --primary-light: #3b82f6;
-            --accent: #fbbf24;
-            --danger: #ef4444;
-            --success: #10b981;
-            --bg: #f8fafc;
-            --glass: rgba(255, 255, 255, 0.95);
+            --primary: #0f172a; /* Deep Navy */
+            --accent: #ca8a04; /* Golden */
+            --success: #059669;
+            --danger: #dc2626;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
         }
 
         body {
-            font-family: 'Hind Siliguri', sans-serif;
-            background-color: var(--bg);
-            background-image: radial-gradient(#cbd5e1 0.5px, transparent 0.5px);
-            background-size: 20px 20px;
-            margin: 0;
-            user-select: none;
-            color: #1e293b;
-        }
-
-        /* Header */
-        .header {
-            background: linear-gradient(135deg, #1e3a8a 0%, #000428 100%);
-            color: white;
-            padding: 40px 20px 60px;
-            text-align: center;
-            border-bottom: 4px solid var(--accent);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
-
-        .logo-img {
-            width: 80px;
-            height: auto;
-            margin-bottom: 15px;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
-            transition: transform 0.3s;
-        }
-        
-        .logo-img:hover { transform: scale(1.1); }
-
-        .header h1 {
-            margin: 0;
-            font-size: 22px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .header p {
-            margin: 5px 0 0;
-            font-size: 15px;
-            opacity: 0.8;
-            font-weight: 300;
-        }
-
-        /* Container & Card */
-        .container {
-            max-width: 480px;
-            margin: -40px auto 50px;
-            padding: 0 20px;
-        }
-
-        .card {
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            border-radius: 24px;
-            padding: 30px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
-            border: 1px solid rgba(255,255,255,0.3);
-            position: relative;
-        }
-
-        /* Tabs */
-        .tab-box {
-            display: flex;
+            font-family: 'Hind Siliguri', 'Inter', sans-serif;
             background: #f1f5f9;
-            border-radius: 16px;
-            padding: 6px;
-            margin-bottom: 30px;
-            gap: 5px;
+            margin: 0;
+            color: var(--text-main);
+            overflow-x: hidden;
         }
 
-        .tab {
-            flex: 1;
-            padding: 12px;
-            cursor: pointer;
-            border-radius: 12px;
-            font-weight: 700;
-            color: #64748b;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            text-align: center;
+        /* Top Navigation */
+        .navbar {
+            background: var(--primary);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
-        .tab.active {
-            background: white;
-            color: var(--primary);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
         }
 
-        /* Status Badge */
-        .status-badge {
-            display: inline-block;
-            width: 100%;
-            padding: 12px;
-            border-radius: 14px;
-            font-size: 14px;
-            font-weight: 700;
-            margin-bottom: 25px;
-            box-sizing: border-box;
-            background: #f0f9ff;
-            color: #0c4a6e;
-            border: 1px solid #e0f2fe;
+        .nav-brand img { width: 45px; }
+        .nav-brand h2 { margin: 0; font-size: 18px; letter-spacing: 0.5px; }
+
+        /* Main Layout */
+        .main-container {
+            max-width: 500px;
+            margin: 30px auto;
+            padding: 0 15px;
         }
 
-        /* Inputs & Buttons */
-        label {
-            display: block;
-            text-align: left;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: #475569;
-            font-size: 14px;
-            padding-left: 5px;
+        .dashboard-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
         }
 
-        select, input {
-            width: 100%;
-            padding: 16px;
-            margin-bottom: 20px;
-            border: 2px solid #e2e8f0;
-            border-radius: 16px;
-            font-size: 16px;
-            font-family: inherit;
-            box-sizing: border-box;
-            transition: all 0.3s;
+        .tabs {
+            display: flex;
             background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
         }
 
-        select:focus, input:focus {
-            border-color: var(--primary-light);
-            background: white;
-            outline: none;
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
-        }
-
-        .btn {
-            width: 100%;
+        .tab-btn {
+            flex: 1;
             padding: 18px;
             border: none;
-            border-radius: 16px;
+            background: none;
+            font-weight: 700;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 15px;
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom: 3px solid var(--accent);
+            background: white;
+        }
+
+        .content { padding: 30px; }
+
+        /* Status Indicator */
+        .status-pill {
+            background: #eff6ff;
+            color: #1d4ed8;
+            padding: 10px 15px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 25px;
+        }
+
+        /* Form Styling */
+        label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; color: #475569; }
+        
+        select, input {
+            width: 100%;
+            padding: 14px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-family: inherit;
+            font-size: 15px;
+            transition: 0.3s;
+            box-sizing: border-box;
+        }
+
+        select:focus { border-color: var(--accent); outline: none; }
+
+        /* Buttons */
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border-radius: 12px;
+            border: none;
             font-weight: 700;
             font-size: 16px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            margin-bottom: 12px;
         }
 
-        .btn-main { background: var(--primary); color: white; }
-        .btn-main:hover { background: #1e40af; transform: translateY(-2px); box-shadow: 0 8px 15px rgba(30, 58, 138, 0.2); }
-        .btn-main:active { transform: translateY(0); }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
 
-        .btn-lock { background: #f97316; color: white; margin-top: 10px; }
-        .btn-danger { 
-            background: transparent; 
-            color: var(--danger); 
-            border: 2px solid #fee2e2;
-            margin-top: 20px;
-        }
-        .btn-danger:hover { background: #fef2f2; border-color: var(--danger); }
+        .btn-outline { background: white; border: 1.5px solid #e2e8f0; color: var(--text-main); margin-top: 10px; }
+        .btn-outline:hover { background: #f8fafc; }
 
-        /* QR & Messages */
+        .btn-excel { background: #166534; color: white; margin-top: 15px; }
+
+        /* Admin Tools */
+        .admin-box { padding: 20px; border: 1px solid #f1f5f9; border-radius: 15px; margin-top: 15px; }
+        
         #qrcode {
-            margin: 25px auto;
-            padding: 15px;
+            margin: 20px auto;
             background: white;
-            border-radius: 20px;
-            display: none;
-            justify-content: center;
-            border: 2px dashed #cbd5e1;
-            width: fit-content;
-        }
-
-        #msg {
             padding: 15px;
-            border-radius: 16px;
-            margin-top: 20px;
-            font-weight: 600;
-            font-size: 14px;
+            border-radius: 15px;
+            border: 1px solid #e2e8f0;
+            width: fit-content;
             display: none;
-            animation: slideUp 0.4s ease;
         }
 
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .teacher-tools {
-            border-top: 2px solid #f1f5f9;
-            margin-top: 20px;
-            padding-top: 20px;
+        .overlay-msg {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 15px 25px;
+            border-radius: 50px;
+            color: white;
+            font-weight: 600;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
 
     </style>
 </head>
 <body>
 
-<div class="header">
-    <img src="https://i.ibb.co/Xrn3XTr/7763.png" alt="GTC Logo" class="logo-img">
-    <h1>Mathematics Department</h1>
-    <p>Government Titumir College, Dhaka</p>
+<div class="navbar">
+    <div class="nav-brand">
+        <img src="https://i.ibb.co/Xrn3XTr/7763.png" alt="Logo">
+        <h2>Math Dept Admin</h2>
+    </div>
+    <div style="color: white; font-size: 20px;"><i class="fa-solid fa-circle-user"></i></div>
 </div>
 
-<div class="container">
-    <div class="card">
-        <div class="tab-box">
-            <div id="s-tab" class="tab active" onclick="switchView('student')">শিক্ষার্থী</div>
-            <div id="t-tab" class="tab" onclick="switchView('teacher')">শিক্ষক</div>
+<div class="main-container">
+    <div class="dashboard-card">
+        <div class="tabs">
+            <button id="s-tab" class="tab-btn active" onclick="switchView('student')"><i class="fa-solid fa-user-graduate"></i> শিক্ষার্থী</button>
+            <button id="t-tab" class="tab-btn" onclick="switchView('teacher')"><i class="fa-solid fa-chalkboard-user"></i> শিক্ষক প্যানেল</button>
         </div>
 
-        <div id="student-section">
-            <div id="lec-status" class="status-badge">সার্ভার চেক করা হচ্ছে...</div>
-            <label>আপনার নাম ও রোল নির্বাচন করুন</label>
-            <select id="student-select">
-                <option value="">-- এখানে খুঁজুন --</option>
-            </select>
-            <button class="btn btn-main" onclick="verifyAndSubmit()">
-                <span>✅ হাজিরা নিশ্চিত করুন</span>
-            </button>
-            <p style="font-size:11px; color:#64748b; margin-top:15px;">
-                ⚠️ আপনার বর্তমান লোকেশন এবং ডিভাইস আইডি যাচাই করা হবে।
-            </p>
-        </div>
+        <div class="content">
+            <div id="student-view">
+                <div id="lec-status" class="status-pill">
+                    <i class="fa-solid fa-spinner fa-spin"></i> সার্ভার চেক করা হচ্ছে...
+                </div>
+                
+                <label>নাম ও রোল নির্বাচন করুন</label>
+                <select id="student-select">
+                    <option value="">তালিকায় খুঁজুন...</option>
+                </select>
 
-        <div id="teacher-section" style="display:none;">
-            <div id="admin-auth">
-                <label>অ্যাডমিন সিকিউরিটি কোড</label>
-                <input type="password" id="admin-pass-input" placeholder="••••••••">
-                <button class="btn btn-main" onclick="checkLogin()">লগইন করুন</button>
+                <button class="btn btn-primary" onclick="verifyAndSubmit()">
+                    <i class="fa-solid fa-fingerprint"></i> হাজিরা নিশ্চিত করুন
+                </button>
+                <p style="font-size: 12px; color: #64748b; margin-top: 15px; text-align: center;">
+                    ক্লাস লোকেশন যাচাই করার জন্য GPS অন রাখা বাধ্যতামূলক।
+                </p>
             </div>
-            
-            <div id="admin-panel" style="display:none;">
-                <label>আজকের শিক্ষক</label>
-                <select id="teacher-name-select">
+
+            <div id="teacher-view" style="display:none;">
+                <div id="admin-auth">
+                    <label>সিকিউরিটি পাসওয়ার্ড</label>
+                    <input type="password" id="admin-pass" placeholder="Password দিন">
+                    <button class="btn btn-primary" onclick="loginAdmin()">লগইন করুন</button>
+                </div>
+
+                <div id="admin-dashboard" style="display:none;">
+                    <label>শিক্ষক নির্বাচন</label>
+                    <select id="teacher-select">
                 <option value="MR">Dr. Md Motlubar Rahman (MR)</option>
                 <option value="RI">Md. Rafiqul Islam (RI)</option>
                 <option value="ZH">Zakir Hossain (ZH)</option>
@@ -262,27 +224,38 @@
                 <option value="NJ">Nazia Jahan (NJ)</option>
                 <option value="BF">Bibi Fatema (BF)</option>
                 <option value="MC">Milton Chowdhury (MC)</option>
-                </select>
-                <button class="btn btn-main" onclick="generateNewLecture()">▶️ নতুন ক্লাস শুরু করুন</button>
-                <div id="qrcode"></div>
-                
-                <div class="teacher-tools">
-                    <button id="lock-btn" class="btn btn-lock" onclick="toggleAttendanceLock()">🔒 হাজিরা বন্ধ করুন</button>
-                    <button class="btn btn-danger" onclick="resetAllData()">🗑️ সব ডাটা রিসেট করুন</button>
+                    </select>
+                    
+                    <button class="btn btn-primary" onclick="startNewClass()">
+                        <i class="fa-solid fa-play"></i> নতুন ক্লাস শুরু করুন
+                    </button>
+
+                    <div id="qrcode"></div>
+
+                    <div class="admin-box">
+                        <p style="font-size: 14px; font-weight: 700; margin-bottom: 10px;">অ্যাডভান্সড কন্ট্রোল</p>
+                        <button id="lock-btn" class="btn btn-outline" onclick="lockAttendance()">
+                            <i class="fa-solid fa-lock"></i> হাজিরা বন্ধ করুন
+                        </button>
+                        
+                        <button class="btn btn-excel" onclick="downloadExcel()">
+                            <i class="fa-solid fa-file-excel"></i> Excel শীট ডাউনলোড করুন
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-
-        <div id="msg"></div>
     </div>
 </div>
 
+<div id="toast" class="overlay-msg"></div>
+
 <script>
+    // Configuration
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzknNXrN3TnFnbqudMwA1sXwLdxfDMzv0rzL_BMV6h-4rM6tVEnVY4V8e_VEQD20R9F/exec";
-    const CAMPUS = { lat: 23.781898, lon: 90.408503, range: 0.20 }; // 200m Range
+    const CAMPUS = { lat: 23.781898, lon: 90.408503, range: 0.20 };
     let currentLec = 0, isLocked = false;
 
-    // স্যাম্পল স্টুডেন্ট ডাটা (বাকিগুলো আপনি এখানে যুক্ত করতে পারবেন)
     const students = [
         {"sl": 1, "reg": "2021835955", "name": "MD. OBAIDUR RAHMAN"}, {"sl": 2, "reg": "2021736063", "name": "MD. SHIFAT KHANDOKER"}, {"sl": 3, "reg": "2021035971", "name": "UJJAL MIA"}, {"sl": 4, "reg": "2021436174", "name": "RATHIN ROY"}, {"sl": 5, "reg": "2021735929", "name": "OMOR FARUK"}, {"sl": 6, "reg": "2021236103", "name": "MD. YOUSUF ALI"}, {"sl": 7, "reg": "2021636000", "name": "ABDULLAH AL MAMUN"}, {"sl": 8, "reg": "2021135934", "name": "MD. SADEK MIA"}, {"sl": 9, "reg": "2021036015", "name": "MD. TANZEEM MAHMUD"}, {"sl": 10, "reg": "2020549693", "name": "MD. RASEL MIA"},
         {"sl": 11, "reg": "2021936052", "name": "M.A RAHIM REFATH"}, {"sl": 12, "reg": "2021935909", "name": "FERDOUS MONDOL"}, {"sl": 13, "reg": "2021835892", "name": "MST. RAFIA ISLAM AKHI"}, {"sl": 14, "reg": "2021635948", "name": "NUSRAT JAHAN NISHI"}, {"sl": 15, "reg": "2021435896", "name": "JOY CHANDRA MONDAL"}, {"sl": 16, "reg": "2021535921", "name": "SUMAYA UDDIN HIRA"}, {"sl": 17, "reg": "2021936007", "name": "MD. IKRAMUL HAQUE BADHON"}, {"sl": 18, "reg": "2021035980", "name": "MD. NAYEEM HOSSAIN"}, {"sl": 19, "reg": "2021135880", "name": "SHARMIN AKTER MITU"}, {"sl": 20, "reg": "2021036060", "name": "MOHAMMOD FERDOUS ALAM MRIDA"},
@@ -306,56 +279,99 @@
         {"sl": 191, "reg": "2020849618", "name": "IMRAN HOSSAIN"}, {"sl": 192, "reg": "2020049616", "name": "MD. MEHEDI HASAN"}, {"sl": 193, "reg": "2021936106", "name": "MOHIMA AKTER"}, {"sl": 194, "reg": "2021735956", "name": "MD. MUBAROK HOSEIN"}, {"sl": 195, "reg": "2021136131", "name": "MD. ASIFUR RAHAMAN SAKIB"}, {"sl": 196, "reg": "2020749574", "name": "MD. ARIF BHUIYAN"}, {"sl": 197, "reg": "18737020468", "name": "MD. ABDUR RAZZAK"}, {"sl": 198, "reg": "2021836116", "name": "MD. SAKIL MIAH"}, {"sl": 199, "reg": "2020349631", "name": "MD. TITUMIR ANAN"}, {"sl": 200, "reg": "2020049760", "name": "MOHIBUL MONTASIR"},
         {"sl": 201, "reg": "2020449487", "name": "MD. FAYSAL ISLAM BHUIYAN"}, {"sl": 202, "reg": "2021935936", "name": "ANTOR HOSSAIN"}, {"sl": 203, "reg": "2021236095", "name": "MD. A. ROKIB"}, {"sl": 204, "reg": "2021235933", "name": "NAIMOR RAHMAN"}, {"sl": 205, "reg": "2020149714", "name": "MD. NADIM ALI"}, {"sl": 206, "reg": "2021036105", "name": "MD. SUJAN MIA"}, {"sl": 207, "reg": "2020449694", "name": "OMAYER HOSSAIN"}, {"sl": 208, "reg": "2020449702", "name": "ABU RAYHAN"}, {"sl": 209, "reg": "2020749565", "name": "MD. BADSHA HOSEN"}, {"sl": 210, "reg": "2020749655", "name": "ARIF HASAN"}, {"sl": 211, "reg": "2021935990", "name": "MD. SHAHEEN ALOM"}, {"sl": 212, "reg": "2021235924", "name": "MD. JONAYED ISLAM JUWEL"}, {"sl": 213, "reg": "2020949608", "name": "MD. JEWEL MAHMUD HASAN"}, {"sl": 214, "reg": "2021936061", "name": "MD. AMRAN ALI"}, {"sl": 215, "reg": "2021636154", "name": "MD. RAKIBUL HASAN"}
     ];
- 
 
-    async function checkServerStatus() {
+    // Functions
+    async function checkStatus() {
         try {
-            let res = await fetch(`${SCRIPT_URL}?action=getStatus`);
-            let data = await res.json();
+            const res = await fetch(`${SCRIPT_URL}?action=getStatus`);
+            const data = await res.json();
             currentLec = data.lec;
             isLocked = data.locked;
-            updateStatusUI();
-        } catch(e) { console.warn("Status Sync Failed"); }
+            renderStatus();
+        } catch(e) { console.error("Sync Error"); }
     }
 
-    function updateStatusUI() {
+    function renderStatus() {
         const badge = document.getElementById('lec-status');
-        if (isLocked) {
-            badge.innerText = "🔒 হাজিরা নেওয়া বন্ধ আছে";
-            badge.style.background = "#fff1f2"; badge.style.color = "#9f1239";
-        } else if (currentLec > 0) {
-            badge.innerText = `চলমান: লেকচার ${currentLec}`;
-            badge.style.background = "#f0fdf4"; badge.style.color = "#166534";
+        if(isLocked) {
+            badge.innerHTML = `<i class="fa-solid fa-lock"></i> হাজিরা বন্ধ`;
+            badge.style.color = "#dc2626"; badge.style.background = "#fef2f2";
+        } else if(currentLec > 0) {
+            badge.innerHTML = `<i class="fa-solid fa-tower-broadcast"></i> চলমান: লেকচার ${currentLec}`;
+            badge.style.color = "#059669"; badge.style.background = "#ecfdf5";
         } else {
-            badge.innerText = "বর্তমানে কোনো ক্লাস নেই";
-            badge.style.background = "#f0f9ff"; badge.style.color = "#0c4a6e";
+            badge.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> কোনো ক্লাস নেই`;
         }
     }
 
     async function verifyAndSubmit() {
-        if(currentLec == 0 || isLocked) return showStatus("বর্তমানে হাজিরা বন্ধ!", "red");
+        if(currentLec === 0 || isLocked) return notify("বর্তমানে কোনো ক্লাস চালু নেই!", "danger");
         const roll = document.getElementById('student-select').value;
-        if(!roll) return showStatus("দয়া করে আপনার নাম সিলেক্ট করুন!", "red");
+        if(!roll) return notify("দয়া করে নিজের নাম সিলেক্ট করুন", "danger");
 
-        showStatus("লোকেশন যাচাই করা হচ্ছে...", "blue");
-        
+        notify("লোকেশন ভেরিফাই হচ্ছে...", "primary");
         navigator.geolocation.getCurrentPosition(async (pos) => {
-            const dist = getDist(pos.coords.latitude, pos.coords.longitude, CAMPUS.lat, CAMPUS.lon);
-            if(dist > CAMPUS.range) return showStatus("আপনি ক্যাম্পাসের বাইরে আছেন!", "red");
+            const dist = getDistance(pos.coords.latitude, pos.coords.longitude, CAMPUS.lat, CAMPUS.lon);
+            if(dist > CAMPUS.range) return notify("আপনি ক্যাম্পাসের বাইরে!", "danger");
 
-            const deviceID = btoa(navigator.userAgent + screen.width).slice(0, 15);
-            
-            showStatus("হাজিরা সার্ভারে পাঠানো হচ্ছে...", "blue");
+            notify("সার্ভারে জমা হচ্ছে...", "primary");
             await fetch(SCRIPT_URL, {
                 method: 'POST',
                 mode: 'no-cors',
-                body: JSON.stringify({ action: "submitAttendance", roll: roll, lecture: currentLec, device: deviceID })
+                body: JSON.stringify({ action: "submitAttendance", roll: roll, lecture: currentLec })
             });
-            showStatus("আপনার হাজিরা সফলভাবে জমা হয়েছে! ✅", "green");
-        }, () => showStatus("GPS অন করে পারমিশন দিন!", "red"), {enableHighAccuracy: true});
+            notify("সফলভাবে হাজিরা জমা হয়েছে! ✅", "success");
+        }, () => notify("GPS অন করুন!", "danger"));
     }
 
-    function getDist(lat1, lon1, lat2, lon2) {
+    // EXCEL DOWNLOAD LOGIC (IMPORTANT)
+    function downloadExcel() {
+        notify("Excel ফাইল জেনারেট হচ্ছে...", "success");
+        // এটি সরাসরি আপনার গুগল শিটের ডাটাকে CSV/Excel হিসেবে ডাউনলোড করার লিংক
+        const downloadUrl = SCRIPT_URL + "?action=downloadExcel";
+        window.open(downloadUrl, '_blank');
+    }
+
+    function loginAdmin() {
+        if(document.getElementById('admin-pass').value === "TMC@2026") {
+            document.getElementById('admin-auth').style.display = 'none';
+            document.getElementById('admin-dashboard').style.display = 'block';
+        } else {
+            alert("ভুল পাসওয়ার্ড!");
+        }
+    }
+
+    async function startNewClass() {
+        currentLec++;
+        const teacher = document.getElementById('teacher-select').value;
+        await fetch(SCRIPT_URL, {
+            method: 'POST', mode: 'no-cors',
+            body: JSON.stringify({ action: "updateLecture", lecture: currentLec, locked: false, teacher: teacher })
+        });
+        const qr = document.getElementById('qrcode');
+        qr.style.display = "block"; qr.innerHTML = "";
+        new QRCode(qr, { text: "TMC-"+currentLec, width: 150, height: 150 });
+        notify("লেকচার " + currentLec + " শুরু হয়েছে", "success");
+        checkStatus();
+    }
+
+    // Helper Functions
+    function switchView(v) {
+        document.getElementById('student-view').style.display = v === 'student' ? 'block' : 'none';
+        document.getElementById('teacher-view').style.display = v === 'teacher' ? 'block' : 'none';
+        document.getElementById('s-tab').className = v === 'student' ? 'tab-btn active' : 'tab-btn';
+        document.getElementById('t-tab').className = v === 'teacher' ? 'tab-btn active' : 'tab-btn';
+    }
+
+    function notify(msg, type) {
+        const t = document.getElementById('toast');
+        t.innerText = msg;
+        t.style.display = "block";
+        t.style.background = type === 'danger' ? '#dc2626' : (type === 'success' ? '#059669' : '#0f172a');
+        setTimeout(() => t.style.display = "none", 3000);
+    }
+
+    function getDistance(lat1, lon1, lat2, lon2) {
         const R = 6371;
         const dLat = (lat2-lat1)*Math.PI/180;
         const dLon = (lon2-lon1)*Math.PI/180;
@@ -363,74 +379,10 @@
         return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
     }
 
-    async function generateNewLecture() {
-        const t = document.getElementById('teacher-name-select').value;
-        currentLec++;
-        isLocked = false;
-        await fetch(SCRIPT_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            body: JSON.stringify({ action: "updateLecture", lecture: currentLec, locked: false, teacher: t })
-        });
-        const qrDiv = document.getElementById('qrcode');
-        qrDiv.style.display = "flex"; qrDiv.innerHTML = "";
-        new QRCode(qrDiv, { text: "TMC-MATH-"+currentLec, width: 180, height: 180 });
-        showStatus("লেকচার " + currentLec + " শুরু হয়েছে!", "green");
-        checkServerStatus();
-    }
-
-    async function toggleAttendanceLock() {
-        isLocked = !isLocked;
-        await fetch(SCRIPT_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            body: JSON.stringify({ action: "updateLecture", lecture: currentLec, locked: isLocked })
-        });
-        document.getElementById('lock-btn').innerText = isLocked ? "🔓 হাজিরা পুনরায় চালু করুন" : "🔒 হাজিরা বন্ধ করুন";
-        checkServerStatus();
-    }
-
-    async function resetAllData() {
-        if(confirm("সাবধান! আপনি কি নিশ্চিতভাবে সব ডাটা মুছে ফেলতে চান? এটি আর ফেরানো যাবে না।")) {
-            showStatus("সার্ভার রিসেট হচ্ছে...", "red");
-            await fetch(SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                body: JSON.stringify({ action: "reset", secret: "TMC@2026" })
-            });
-            location.reload();
-        }
-    }
-
-    function checkLogin() {
-        if(document.getElementById('admin-pass-input').value === "TMC@2026") {
-            document.getElementById('admin-auth').style.display = "none";
-            document.getElementById('admin-panel').style.display = "block";
-        } else {
-            alert("ভুল পাসওয়ার্ড!");
-        }
-    }
-
-    function switchView(v) {
-        document.getElementById('student-section').style.display = v === 'student' ? 'block' : 'none';
-        document.getElementById('teacher-section').style.display = v === 'teacher' ? 'block' : 'none';
-        document.getElementById('s-tab').className = v === 'student' ? 'tab active' : 'tab';
-        document.getElementById('t-tab').className = v === 'teacher' ? 'tab active' : 'tab';
-    }
-
-    function showStatus(t, c) {
-        const m = document.getElementById('msg');
-        m.style.display = "block"; m.innerText = t;
-        if(c === 'red') { m.style.background = "#fee2e2"; m.style.color = "#991b1b"; }
-        else if(c === 'green') { m.style.background = "#dcfce7"; m.style.color = "#166534"; }
-        else { m.style.background = "#e0f2fe"; m.style.color = "#0369a1"; }
-    }
-
     window.onload = () => {
         const s = document.getElementById('student-select');
-        students.sort((a,b)=>a.sl-b.sl).forEach(st => s.add(new Option(`${st.sl}. ${st.name}`, st.sl)));
-        checkServerStatus();
-        setInterval(checkServerStatus, 15000);
+        students.forEach(st => s.add(new Option(`${st.sl}. ${st.name}`, st.sl)));
+        checkStatus();
     }
 </script>
 </body>
