@@ -13,9 +13,7 @@
             --primary: #1e3a8a; --accent: #d97706; --bg: #f8fafc;
             --white: #ffffff; --text-dark: #0f172a; --danger: #e11d48; --success: #10b981;
         }
-
         body { font-family: 'Inter', 'Hind Siliguri', sans-serif; background: var(--bg); margin: 0; color: var(--text-dark); overflow-x: hidden; }
-
         .header {
             background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
             padding: 60px 20px; text-align: center; color: var(--white);
@@ -23,64 +21,34 @@
         }
         .header h1 { font-size: 30px; margin: 0; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
         .header p { font-size: 14px; opacity: 0.8; margin-top: 10px; font-weight: 400; }
-
         .container { max-width: 500px; margin: -40px auto 60px; padding: 0 15px; }
-
         .main-card {
             background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(10px);
             border-radius: 30px; padding: 30px; box-shadow: 0 20px 60px rgba(0,0,0,0.12);
             border: 1px solid rgba(255,255,255,0.5);
         }
-
-        .tab-switcher {
-            display: flex; background: #f1f5f9; border-radius: 18px; padding: 6px; margin-bottom: 30px;
-        }
-        .tab-btn {
-            flex: 1; padding: 15px; border: none; background: none; font-weight: 700;
-            color: #64748b; cursor: pointer; border-radius: 14px; transition: 0.4s;
-        }
+        .tab-switcher { display: flex; background: #f1f5f9; border-radius: 18px; padding: 6px; margin-bottom: 30px; }
+        .tab-btn { flex: 1; padding: 15px; border: none; background: none; font-weight: 700; color: #64748b; cursor: pointer; border-radius: 14px; transition: 0.4s; }
         .tab-btn.active { background: var(--white); color: var(--primary); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-
         .input-group { margin-bottom: 20px; }
         label { display: block; font-size: 12px; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px; }
-        input, select {
-            width: 100%; padding: 16px; border: 2px solid #e2e8f0; border-radius: 16px;
-            font-size: 16px; transition: 0.3s; box-sizing: border-box; background: #f8fafc;
-        }
+        input, select { width: 100%; padding: 16px; border: 2px solid #e2e8f0; border-radius: 16px; font-size: 16px; transition: 0.3s; box-sizing: border-box; background: #f8fafc; }
         input:focus, select:focus { border-color: var(--primary); outline: none; background: #fff; box-shadow: 0 0 0 4px rgba(30,58,138,0.05); }
-
-        .btn {
-            width: 100%; padding: 18px; border-radius: 16px; border: none; font-weight: 700;
-            cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 16px;
-        }
+        .btn { width: 100%; padding: 18px; border-radius: 16px; border: none; font-weight: 700; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 16px; }
         .btn-primary { background: var(--primary); color: white; }
         .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(30,58,138,0.25); }
         .btn-excel { background: #166534; color: white; }
         .btn-danger { background: #fff1f2; color: var(--danger); border: 1.5px solid #fecaca; margin-top: 25px; font-size: 14px; }
-
-        /* Live Excel Table Style */
-        .excel-preview {
-            margin-top: 25px; border: 1px solid #e2e8f0; border-radius: 16px; overflow: hidden; background: white;
-        }
+        .excel-preview { margin-top: 25px; border: 1px solid #e2e8f0; border-radius: 16px; overflow: hidden; background: white; }
         .table-container { max-height: 250px; overflow-y: auto; }
         table { width: 100%; border-collapse: collapse; font-size: 13px; }
         th { background: #f8fafc; padding: 12px; text-align: left; color: var(--primary); font-weight: 700; border-bottom: 2px solid #e2e8f0; position: sticky; top: 0; }
         td { padding: 12px; border-bottom: 1px solid #f1f5f9; color: #475569; }
-
-        .status-badge {
-            padding: 12px; border-radius: 15px; text-align: center; font-weight: 700; font-size: 14px; margin-bottom: 25px;
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-        }
+        .status-badge { padding: 12px; border-radius: 15px; text-align: center; font-weight: 700; font-size: 14px; margin-bottom: 25px; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .active-class { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
         .no-class { background: #f1f5f9; color: #64748b; }
-
         #qrcode { margin: 25px auto; padding: 15px; background: white; border-radius: 15px; border: 2px dashed var(--accent); display: none; width: fit-content; }
-
-        .toast {
-            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-            padding: 16px 32px; border-radius: 50px; color: white; font-weight: 600;
-            display: none; z-index: 2000; animation: slideDown 0.4s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
+        .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); padding: 16px 32px; border-radius: 50px; color: white; font-weight: 600; display: none; z-index: 2000; animation: slideDown 0.4s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
         @keyframes slideDown { from { top: -60px; } to { top: 20px; } }
     </style>
 </head>
@@ -134,15 +102,15 @@
 
                 <div class="excel-preview">
                     <div style="padding: 10px; background: #f1f5f9; font-size: 11px; font-weight: 700; color: var(--primary);">
-                        <i class="fa-solid fa-table"></i> লাইভ হাজিরা রিপোর্ট (শিট প্রিভিউ)
+                        <i class="fa-solid fa-table"></i> লাইভ হাজিরা রিপোর্ট
                     </div>
                     <div class="table-container">
                         <table>
-                            <thead>
-                                <tr><th>সময়</th><th>আইডি/রোল</th><th>লেকচার</th></tr>
+                            <thead id="table-head">
+                                <tr><th>Roll</th><th>Name</th></tr>
                             </thead>
                             <tbody id="table-body">
-                                <tr><td colspan="3" style="text-align:center;">ডাটা লোড হচ্ছে...</td></tr>
+                                <tr><td colspan="2" style="text-align:center;">ডাটা লোড হচ্ছে...</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -154,34 +122,39 @@
             </div>
         </div>
 
-      <div id="student-section" style="display:none;">
-    <div id="live-indicator" class="status-badge no-class">
-        <i class="fa-solid fa-spinner fa-spin"></i> স্ট্যাটাস চেক হচ্ছে...
-    </div>
-    
-    <div class="input-group">
-        <label>রোল/সিরিয়াল নম্বর দিয়ে খুঁজুন</label>
-        <div style="position: relative;">
-            <input type="number" id="roll-search" placeholder="উদা: 07" oninput="searchStudent()">
-            <i class="fa-solid fa-search" style="position: absolute; right: 15px; top: 18px; color: #cbd5e1;"></i>
+        <div id="student-section" style="display:none;">
+            <div id="live-indicator" class="status-badge no-class">
+                <i class="fa-solid fa-spinner fa-spin"></i> স্ট্যাটাস চেক হচ্ছে...
+            </div>
+            
+            <div class="input-group">
+                <label>রোল/সিরিয়াল নম্বর (১-২১৫)</label>
+                <div style="position: relative;">
+                    <input type="number" id="roll-search" placeholder="উদা: 07" oninput="searchStudent()">
+                    <i class="fa-solid fa-search" style="position: absolute; right: 15px; top: 18px; color: #cbd5e1;"></i>
+                </div>
+            </div>
+
+            <div class="input-group" id="name-display-group" style="display:none;">
+                <label>শিক্ষার্থীর নাম</label>
+                <input type="text" id="detected-name" readonly style="background: #f1f5f9; border: 2px solid var(--primary); font-weight: 700;">
+            </div>
+
+            <button class="btn btn-primary" id="att-btn" onclick="postAttendance()" disabled>
+                <i class="fa-solid fa-fingerprint"></i> হাজিরা দিন
+            </button>
         </div>
     </div>
-
-    <div class="input-group" id="name-display-group" style="display:none;">
-        <label>শিক্ষার্থীর নাম (অটো-ডিটেক্টেড)</label>
-        <input type="text" id="detected-name" readonly style="background: #f1f5f9; border: 2px solid var(--primary); font-weight: 700;">
-    </div>
-
-    <button class="btn btn-primary" id="att-btn" onclick="postAttendance()" disabled>
-        <i class="fa-solid fa-fingerprint"></i> হাজিরা দিন
-    </button>
 </div>
 
+<div id="toast" class="toast"></div>
+
 <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxohmf6DvUMq0r272zOfIkI1mQScIiwDlJL0s3ISPC2AQgu5tWsQU-gQAInfTWu6k2OJQ/exec"; // এখানে আপনার URL বসান
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxohmf6DvUMq0r272zOfIkI1mQScIiwDlJL0s3ISPC2AQgu5tWsQU-gQAInfTWu6k2OJQ/exec";
     let currentLec = 0;
     let liveTimer;
 
+    // আপনার দেওয়া শিক্ষার্থী লিস্ট (২১৫ জন)
     const students = [
         {"sl": 1, "reg": "2021835955", "name": "MD. OBAIDUR RAHMAN"}, {"sl": 2, "reg": "2021736063", "name": "MD. SHIFAT KHANDOKER"}, {"sl": 3, "reg": "2021035971", "name": "UJJAL MIA"}, {"sl": 4, "reg": "2021436174", "name": "RATHIN ROY"}, {"sl": 5, "reg": "2021735929", "name": "OMOR FARUK"}, {"sl": 6, "reg": "2021236103", "name": "MD. YOUSUF ALI"}, {"sl": 7, "reg": "2021636000", "name": "ABDULLAH AL MAMUN"}, {"sl": 8, "reg": "2021135934", "name": "MD. SADEK MIA"}, {"sl": 9, "reg": "2021036015", "name": "MD. TANZEEM MAHMUD"}, {"sl": 10, "reg": "2020549693", "name": "MD. RASEL MIA"},
         {"sl": 11, "reg": "2021936052", "name": "M.A RAHIM REFATH"}, {"sl": 12, "reg": "2021935909", "name": "FERDOUS MONDOL"}, {"sl": 13, "reg": "2021835892", "name": "MST. RAFIA ISLAM AKHI"}, {"sl": 14, "reg": "2021635948", "name": "NUSRAT JAHAN NISHI"}, {"sl": 15, "reg": "2021435896", "name": "JOY CHANDRA MONDAL"}, {"sl": 16, "reg": "2021535921", "name": "SUMAYA UDDIN HIRA"}, {"sl": 17, "reg": "2021936007", "name": "MD. IKRAMUL HAQUE BADHON"}, {"sl": 18, "reg": "2021035980", "name": "MD. NAYEEM HOSSAIN"}, {"sl": 19, "reg": "2021135880", "name": "SHARMIN AKTER MITU"}, {"sl": 20, "reg": "2021036060", "name": "MOHAMMOD FERDOUS ALAM MRIDA"},
@@ -206,48 +179,97 @@
         {"sl": 201, "reg": "2020449487", "name": "MD. FAYSAL ISLAM BHUIYAN"}, {"sl": 202, "reg": "2021935936", "name": "ANTOR HOSSAIN"}, {"sl": 203, "reg": "2021236095", "name": "MD. A. ROKIB"}, {"sl": 204, "reg": "2021235933", "name": "NAIMOR RAHMAN"}, {"sl": 205, "reg": "2020149714", "name": "MD. NADIM ALI"}, {"sl": 206, "reg": "2021036105", "name": "MD. SUJAN MIA"}, {"sl": 207, "reg": "2020449694", "name": "OMAYER HOSSAIN"}, {"sl": 208, "reg": "2020449702", "name": "ABU RAYHAN"}, {"sl": 209, "reg": "2020749565", "name": "MD. BADSHA HOSEN"}, {"sl": 210, "reg": "2020749655", "name": "ARIF HASAN"}, {"sl": 211, "reg": "2021935990", "name": "MD. SHAHEEN ALOM"}, {"sl": 212, "reg": "2021235924", "name": "MD. JONAYED ISLAM JUWEL"}, {"sl": 213, "reg": "2020949608", "name": "MD. JEWEL MAHMUD HASAN"}, {"sl": 214, "reg": "2021936061", "name": "MD. AMRAN ALI"}, {"sl": 215, "reg": "2021636154", "name": "MD. RAKIBUL HASAN"}
     ];
 
-function searchStudent() {
-    const rollInput = document.getElementById('roll-search').value.trim();
-    const nameInput = document.getElementById('detected-name');
-    const group = document.getElementById('name-display-group');
-    const btn = document.getElementById('att-btn');
+    function searchStudent() {
+        const rollInput = document.getElementById('roll-search').value.trim();
+        const nameInput = document.getElementById('detected-name');
+        const group = document.getElementById('name-display-group');
+        const btn = document.getElementById('att-btn');
+        
+        // সিরিয়াল নম্বর অনুযায়ী স্টুডেন্ট খোঁজা
+        const student = students.find(s => s.sl == rollInput);
 
-    if (studentData[rollInput]) {
-        nameInput.value = studentData[rollInput];
-        group.style.display = 'block';
-        // ক্লাস চালু থাকলে তবেই বাটন এনাবেল হবে
-        if(currentLec > 0) btn.disabled = false;
-        notify("শিক্ষার্থী খুঁজে পাওয়া গেছে", "#10b981");
-    } else {
-        nameInput.value = "";
-        group.style.display = 'none';
-        btn.disabled = true;
+        if (student) {
+            nameInput.value = student.name;
+            group.style.display = 'block';
+            if(currentLec > 0) btn.disabled = false;
+        } else {
+            nameInput.value = "";
+            group.style.display = 'none';
+            btn.disabled = true;
+        }
     }
-}
 
-// হাজিরা পাঠানোর সময় এই রোলটি ব্যবহার হবে
-async function postAttendance() {
-    const roll = document.getElementById('roll-search').value;
-    const name = document.getElementById('detected-name').value;
-    
-    if(!roll || !name) return notify("সঠিক রোল দিন!", "#e11d48");
-    
-    notify("হাজিরা জমা হচ্ছে...", "#1e3a8a");
-    await fetch(SCRIPT_URL, {
-        method: 'POST', mode: 'no-cors',
-        body: JSON.stringify({ 
-            action: "submit", 
-            roll: roll, 
-            name: name, // নামটিও পাঠিয়ে দিচ্ছি ব্যাকেন্ডে
-            lec: currentLec 
-        })
-    });
-    notify("হাজিরা সফল! ✅", "#10b981");
-    
-    // হাজিরা শেষে ইনপুট ক্লিয়ার করা
-    document.getElementById('roll-search').value = "";
-    document.getElementById('name-display-group').style.display = 'none';
-}
+    async function postAttendance() {
+        const roll = document.getElementById('roll-search').value;
+        const name = document.getElementById('detected-name').value;
+        if(!roll || !name) return notify("সঠিক রোল দিন!", "#e11d48");
+        
+        notify("জমা হচ্ছে...", "#1e3a8a");
+        await fetch(SCRIPT_URL, {
+            method: 'POST', mode: 'no-cors',
+            body: JSON.stringify({ action: "submit", roll: roll, name: name, lec: currentLec })
+        });
+        
+        notify("হাজিরা সফল! ✅", "#10b981");
+        document.getElementById('roll-search').value = "";
+        document.getElementById('name-display-group').style.display = 'none';
+        document.getElementById('att-btn').disabled = true;
+    }
+
+    async function syncStatus() {
+        const badge = document.getElementById('live-indicator');
+        try {
+            const res = await fetch(`${SCRIPT_URL}?action=getStatus`);
+            const data = await res.json();
+            currentLec = parseInt(data.lec);
+            if(currentLec > 0) {
+                badge.className = "status-badge active-class";
+                badge.innerHTML = `<i class="fa-solid fa-satellite-dish fa-fade"></i> লেকচার ${currentLec} চালু আছে`;
+            } else {
+                badge.className = "status-badge no-class";
+                badge.innerHTML = `<i class="fa-solid fa-lock"></i> বর্তমানে ক্লাস বন্ধ`;
+            }
+        } catch(e) { console.log("Status check failed"); }
+    }
+
+    async function fetchTableData() {
+        try {
+            const res = await fetch(`${SCRIPT_URL}?action=getRecords`);
+            const rows = await res.json();
+            const tbody = document.getElementById('table-body');
+            const thead = document.getElementById('table-head');
+            if (rows.length === 0) return;
+            
+            // হেডার
+            let headerRow = rows[0];
+            let hHtml = "<tr>";
+            headerRow.forEach(h => hHtml += `<th>${h}</th>`);
+            hHtml += "<th>Total</th></tr>";
+            thead.innerHTML = hHtml;
+
+            // ডাটা
+            tbody.innerHTML = "";
+            for (let i = 1; i < rows.length; i++) {
+                let tr = "<tr>";
+                let sum = 0;
+                rows[i].forEach((cell, idx) => {
+                    tr += `<td>${cell || 0}</td>`;
+                    if(idx >= 3) sum += (parseInt(cell) || 0);
+                });
+                tr += `<td style="font-weight:bold;">${sum}</td></tr>`;
+                tbody.innerHTML += tr;
+            }
+        } catch(e) { }
+    }
+
+    async function initiateClass() {
+        const teacher = document.getElementById('t-name').value;
+        notify("আপডেট হচ্ছে...", "#1e3a8a");
+        await fetch(SCRIPT_URL, {
+            method: 'POST', mode: 'no-cors',
+            body: JSON.stringify({ action: "startClass", teacher: teacher })
+        });
+        setTimeout(() => { syncStatus(); notify("ক্লাস শুরু!", "#10b981"); }, 1500);
     }
 
     function login() {
@@ -262,7 +284,7 @@ async function postAttendance() {
     function downloadReport() { window.open(SCRIPT_URL + "?action=downloadExcel", '_blank'); }
 
     async function wipeData() {
-        if(confirm("সব ডাটা মুছে যাবে! আপনি কি নিশ্চিত?")) {
+        if(confirm("সব ডাটা মুছে যাবে!")) {
             await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: "reset" }) });
             location.reload();
         }
@@ -282,11 +304,7 @@ async function postAttendance() {
         setTimeout(() => t.style.display = 'none', 3000);
     }
 
-    window.onload = () => {
-        const sel = document.getElementById('std-name');
-        students.forEach(s => sel.add(new Option(`${s.id}. ${s.name}`, s.id)));
-        syncStatus();
-    }
+    window.onload = () => { syncStatus(); }
 </script>
 </body>
 </html>
