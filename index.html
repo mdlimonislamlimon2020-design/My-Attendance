@@ -140,14 +140,38 @@
                 <input type="text" id="detected-name" readonly style="background: #f1f5f9; border: 2px solid var(--primary); font-weight: 700;">
             </div>
 
-            <button class="btn btn-primary" id="att-btn" onclick="postAttendance()" disabled>
-                <i class="fa-solid fa-fingerprint"></i> হাজিরা দিন
-            </button>
-        </div>
-    </div>
-</div>
+            async function postAttendance() {
+    const roll = document.getElementById('roll-search').value;
+    const name = document.getElementById('detected-name').value;
+    
+    // ১. একই ডিভাইস থেকে ডুপ্লিকেট চেক (নতুন অংশ)
+    const submittedKey = `submitted_lec_${currentLec}`;
+    if (localStorage.getItem(submittedKey)) {
+        return notify("আপনি ইতিমধ্যে এই লেকচারের হাজিরা দিয়েছেন!", "#e11d48");
+    }
 
-<div id="toast" class="toast"></div>
+    if(!roll || !name) return notify("সঠিক রোল দিন!", "#e11d48");
+    
+    notify("জমা হচ্ছে...", "#1e3a8a");
+    
+    try {
+        await fetch(SCRIPT_URL, {
+            method: 'POST', 
+            mode: 'no-cors',
+            body: JSON.stringify({ action: "submit", roll: roll, name: name, lec: currentLec })
+        });
+        
+        // ২. হাজিরা সফল হলে ডিভাইসে মেমোরি সেট করা (নতুন অংশ)
+        localStorage.setItem(submittedKey, "true");
+        
+        notify("হাজিরা সফল! ✅", "#10b981");
+        document.getElementById('roll-search').value = "";
+        document.getElementById('name-display-group').style.display = 'none';
+        document.getElementById('att-btn').disabled = true;
+    } catch (e) {
+        notify("ত্রুটি হয়েছে! আবার চেষ্টা করুন।", "#e11d48");
+    }
+}
 
 <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxohmf6DvUMq0r272zOfIkI1mQScIiwDlJL0s3ISPC2AQgu5tWsQU-gQAInfTWu6k2OJQ/exec";
